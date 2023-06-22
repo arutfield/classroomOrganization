@@ -30,56 +30,37 @@ public class MainProgram {
 		boolean isInTeacherSection = false;
 		for (Row row : sheet) {
 			Classroom newClassroom = null;
-			boolean isStartOfRow = true;
-		    for (Cell cell : row) {
-		        switch (cell.getCellType()) {
-		            case STRING:
-		            	if (cell.getStringCellValue().isBlank())
-		            		continue;
-		            	if (cell.getStringCellValue().toLowerCase().equals("teachers")) {
-		            		if (isInTeacherSection) {
-		            			throw new ClassSetupException("Cannot have multiple teacher sections");
-		            		} else {
-		            			isInTeacherSection = true;
-		            			continue;
-		            		}
-		            	}
-		            	if (isInTeacherSection) {
-		            		if (cell.getStringCellValue().toLowerCase().equals("students")) {
-		            			isInTeacherSection = false;
-		            			continue;
-		            		}
-		            		if (isStartOfRow) {
-		            			newClassroom = new Classroom(cell.getStringCellValue());
-		            		} else {
-		            			if (cell.getStringCellValue().toLowerCase().equals("ell")) {
-		            				newClassroom.enableEll();
-		            			} else if (cell.getStringCellValue().toLowerCase().equals("504 plan")) {
-		            				newClassroom.enable504();
-		            			}
-		            		}
-		            		
-		            	}
-		            	
-		            	System.out.println("string: " + cell.getStringCellValue());
-		            	break;
-		            case NUMERIC:
-		            	System.out.println("numeric: " + cell.getNumericCellValue());
-		            	break;
-		            case BOOLEAN:
-		            	System.out.println("boolean: " + cell.getBooleanCellValue());
-		            	break;
-		            case FORMULA:
-		            	System.out.println("formula: " + cell.getCellFormula());
-		            	break;
-		            default:
-		            	break;
-		        }
-		        isStartOfRow = false;
-		        
+			if (row.getLastCellNum() == 0)
+				continue;
+			Cell cell = row.getCell(0);
+		    switch (cell.getCellType()) {
+		        case STRING:
+		        	if (cell.getStringCellValue().toLowerCase().equals("students"))
+		        		isInTeacherSection = false;
+		          	if (cell.getStringCellValue().toLowerCase().equals("teachers")) {
+		           		if (!classes.isEmpty())
+		           			throw new ClassSetupException("Cannot have multiple teacher sections");
+		           		else {
+		           			isInTeacherSection = true;
+		           			continue;
+		           		}
+		           	}
+		          	if (isInTeacherSection) {
+	           			newClassroom = new Classroom(cell.getStringCellValue());
+	           			for (int i=1; i<row.getLastCellNum(); i++) {
+	           				Cell subCell = row.getCell(i);
+		           			if (subCell.getStringCellValue().toLowerCase().equals("ell"))
+		           				newClassroom.enableEll();
+		           			else if (subCell.getStringCellValue().toLowerCase().equals("504 plan"))
+		           				newClassroom.enable504();
+	           			}
+			        	classes.add(newClassroom);
+		          	}
+		            break;
+		        default:
+		            break;
 		    }
-		    if (newClassroom != null)
-	        	classes.add(newClassroom);
+		        
 		}
 		workbook.close();
 	}
