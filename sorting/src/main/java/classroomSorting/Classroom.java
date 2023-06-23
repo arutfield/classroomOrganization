@@ -17,4 +17,16 @@ public class Classroom {
 	public void enable504() {
 		is504 = true;
 	}
+
+	public String getTeacherName() {
+		return teacherName;
+	}
+
+	public boolean IsEll() {
+		return isEll;
+	}
+
+	public boolean Is504() {
+		return is504;
+	}
 }
