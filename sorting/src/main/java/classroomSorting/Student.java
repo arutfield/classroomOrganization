@@ -16,6 +16,10 @@ public class Student {
 		allowedTeachers = (LinkedList<String>) teachers.clone();
 	}
 
+	public String getName() {
+		return name;
+	}
+	
 	public void setIsFemale(boolean female) {
 		isFemale = female;
 	}
@@ -37,5 +41,6 @@ public class Student {
 	public void addForbiddenClassmate(String studentName) {
 		forbiddenClassmates.add(studentName);
 	}
+
 
 }

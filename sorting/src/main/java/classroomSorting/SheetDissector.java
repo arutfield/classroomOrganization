@@ -20,10 +20,20 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import exceptions.ClassSetupException;
+import exceptions.SearchingException;
 
 public class SheetDissector {
-	public static LinkedList<Classroom> classes = new LinkedList<Classroom>();
-	public static LinkedList<Student> students = new LinkedList<Student>();
+	private static LinkedList<Classroom> classes = new LinkedList<Classroom>();
+	private static LinkedList<Student> students = new LinkedList<Student>();
+
+	public static LinkedList<Classroom> getClasses() {
+		return classes;
+	}
+
+	public static LinkedList<Student> getStudents() {
+		return students;
+	}
+
 	
 	public static void ParseSheet(String file) throws IOException, ClassSetupException {
 
@@ -153,5 +163,20 @@ public class SheetDissector {
 
 	}
 
+	public static Classroom getClassroomByName(String teacher) throws SearchingException {
+		for (Classroom cl : SheetDissector.getClasses()) {
+			if (cl.getTeacherName().equals(teacher))
+				return cl;
+		}
+		throw new SearchingException("No class with name " + teacher);
+	}
+
+	public static Student getStudentByName(String studentName) throws SearchingException {
+		for (Student stu : SheetDissector.getStudents()) {
+			if (stu.getName().equals(studentName))
+				return stu;
+		}
+		throw new SearchingException("No student with name " + studentName);
+	}
 	
 }
