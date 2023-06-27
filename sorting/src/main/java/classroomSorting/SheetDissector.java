@@ -23,8 +23,8 @@ import exceptions.ClassSetupException;
 import exceptions.SearchingException;
 
 public class SheetDissector {
-	private static LinkedList<Classroom> classes = new LinkedList<Classroom>();
-	private static LinkedList<Student> students = new LinkedList<Student>();
+	private static LinkedList<Classroom> classes;
+	private static LinkedList<Student> students;
 
 	public static LinkedList<Classroom> getClasses() {
 		return classes;
@@ -36,7 +36,8 @@ public class SheetDissector {
 
 	
 	public static void ParseSheet(String file) throws IOException, ClassSetupException {
-
+		classes = new LinkedList<Classroom>();
+		students = new LinkedList<Student>();
 		LinkedList<String> teacherNames = new LinkedList<String>();
 		FileInputStream fis = new FileInputStream(new File(file));
 		XSSFWorkbook workbook = new XSSFWorkbook(fis);

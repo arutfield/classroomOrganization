@@ -5,8 +5,8 @@ import java.util.LinkedList;
 public class Student {
 
 	private final LinkedList<String> allowedTeachers;
-	private final LinkedList<String> desiredClassmates = new LinkedList<String>();
-	private final LinkedList<String> forbiddenClassmates = new LinkedList<String>();
+	private final LinkedList<String> requiredStudents = new LinkedList<String>();
+	private final LinkedList<String> forbiddenStudents = new LinkedList<String>();
 	private final String name;
 	private boolean isFemale;
 	
@@ -35,11 +35,27 @@ public class Student {
 	}
 
 	public void addRequiredClassmate(String studentInList) {
-		desiredClassmates.add(studentInList);
+		requiredStudents.add(studentInList);
 	}
 
 	public void addForbiddenClassmate(String studentName) {
-		forbiddenClassmates.add(studentName);
+		forbiddenStudents.add(studentName);
+	}
+	
+	public boolean IsFemale() {
+		return isFemale;
+	}
+
+	public LinkedList<String> getAllowedTeachers() {
+		return allowedTeachers;
+	}
+
+	public LinkedList<String> getRequiredStudents() {
+		return requiredStudents;
+	}
+
+	public LinkedList<String> getForbiddenStudents() {
+		return forbiddenStudents;
 	}
 
 
