@@ -78,8 +78,8 @@ public class SheetDissector {
 						Cell subCell = row.getCell(i);
 						if (subCell.getStringCellValue().toLowerCase().equals("ell"))
 							newClassroom.enableEll();
-						else if (subCell.getStringCellValue().toLowerCase().equals("504 plan"))
-							newClassroom.enable504();
+						else if (subCell.getStringCellValue().toLowerCase().equals("iep"))
+							newClassroom.enableIEP();
 					}
 					classes.add(newClassroom);
 				}
@@ -138,16 +138,17 @@ public class SheetDissector {
 										newStudent.addForbiddenTeacher(currentClass.getTeacherName());
 								}
 							}
+							else if (specialCategory.equals("IEP")) {
+								for (Classroom currentClass : classes) {
+									if (!currentClass.IsIEP())
+										newStudent.addForbiddenTeacher(currentClass.getTeacherName());
+								}
+							}
 						}
 					}
 				}
 			} else if (subCell.getCellType() == CellType.NUMERIC) {
-				if (subCell.getNumericCellValue() == 504 && studentCharacteristicsList.get(i - 1).toLowerCase().equals("special circumstances")) {
-					for (Classroom currentClass : classes) {
-						if (!currentClass.Is504())
-							newStudent.addForbiddenTeacher(currentClass.getTeacherName());
-					}
-				} else throw new ClassSetupException("unknown number found " + subCell.getNumericCellValue());
+				throw new ClassSetupException("unknown number found " + subCell.getNumericCellValue());
 			} else
 				throw new ClassSetupException("Unknown type: " + subCell.getCellType().name());
 		}

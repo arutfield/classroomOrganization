@@ -4,7 +4,7 @@ public class Classroom {
 
 	private final String teacherName;
 	private boolean isEll;
-	private boolean is504;
+	private boolean isIEP;
 	
 	public Classroom(String teacher) {
 		this.teacherName = teacher;
@@ -14,8 +14,8 @@ public class Classroom {
 		isEll = true;
 	}
 	
-	public void enable504() {
-		is504 = true;
+	public void enableIEP() {
+		isIEP = true;
 	}
 
 	public String getTeacherName() {
@@ -26,7 +26,7 @@ public class Classroom {
 		return isEll;
 	}
 
-	public boolean Is504() {
-		return is504;
+	public boolean IsIEP() {
+		return isIEP;
 	}
 }

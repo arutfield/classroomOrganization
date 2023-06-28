@@ -22,23 +22,24 @@ public class ParserTest {
 
 	@Test
 	public void TestParserTeachers() throws IOException, ClassSetupException, SearchingException {
-		SheetDissector.ParseSheet("../sampleClassToArrange.xlsx");
+		System.out.println("dir: " + System.getProperty("user.dir"));
+		SheetDissector.ParseSheet("src\\test\\resources\\sampleClassToArrange.xlsx");
 		
 		assertEquals(3, SheetDissector.getClasses().size());
 		assertEquals(15, SheetDissector.getStudents().size());
 		assertTrue(SheetDissector.getClassroomByName("Mr A.").IsEll());
-		assertFalse(SheetDissector.getClassroomByName("Mr A.").Is504());
+		assertFalse(SheetDissector.getClassroomByName("Mr A.").IsIEP());
 		assertFalse(SheetDissector.getClassroomByName("Ms B.").IsEll());
-		assertFalse(SheetDissector.getClassroomByName("Ms B.").Is504());
+		assertFalse(SheetDissector.getClassroomByName("Ms B.").IsIEP());
 		assertFalse(SheetDissector.getClassroomByName("Mrs C.").IsEll());
-		assertTrue(SheetDissector.getClassroomByName("Mrs C.").Is504());
+		assertTrue(SheetDissector.getClassroomByName("Mrs C.").IsIEP());
 		
 	}
 
 	
 	@Test
 	public void TestParserStudents() throws IOException, ClassSetupException, SearchingException {
-		SheetDissector.ParseSheet("../sampleClassToArrange.xlsx");
+		SheetDissector.ParseSheet("src\\test\\resources\\sampleClassToArrange.xlsx");
 		
 		assertEquals(3, SheetDissector.getClasses().size());
 		assertEquals(15, SheetDissector.getStudents().size());
@@ -47,8 +48,10 @@ public class ParserTest {
 		
 		LinkedList<String> twoForbiddenList = new LinkedList<String>(Arrays.asList("One"));
 		LinkedList<String> mrAList = new LinkedList<String>(Arrays.asList("Mr A."));
+		LinkedList<String> mrAMissingList = new LinkedList<String>(Arrays.asList("Ms B.", "Mrs C."));
 		checkStudentCharacteristics("Two", true, mrAList, emptyStringList, twoForbiddenList);
-		
+		checkStudentCharacteristics("Three", true, mrAList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Four", true, mrAMissingList, emptyStringList, emptyStringList);
 	}
 
 	private void checkStudentCharacteristics(String name, boolean isFemale, LinkedList<String> allowedTeachers,
