@@ -66,6 +66,27 @@ public class ParserTest {
 		checkStudentCharacteristics("Fifteen", false, getAllTeacherNames(), emptyStringList, emptyStringList);
 	}
 
+	@Test
+	public void TestParserSmallList() throws IOException, ClassSetupException, SearchingException {
+		SheetDissector.ParseSheet("src\\test\\resources\\smallClass.xlsx");
+		
+		assertEquals(2, SheetDissector.getClasses().size());
+		assertEquals(6, SheetDissector.getStudents().size());
+		
+		assertTrue(SheetDissector.getClassroomByName("Miss One").IsEll());
+		assertFalse(SheetDissector.getClassroomByName("Miss One").IsIEP());
+		assertFalse(SheetDissector.getClassroomByName("Mr Two").IsEll());
+		assertTrue(SheetDissector.getClassroomByName("Mr Two").IsIEP());
+
+		checkStudentCharacteristics("A", true, getAllTeacherNames(), new LinkedList<String>(Arrays.asList("B")), new LinkedList<String>(Arrays.asList("D", "A")));
+		checkStudentCharacteristics("B", false, new LinkedList<String>(Arrays.asList("Miss One")), emptyStringList, emptyStringList);
+		checkStudentCharacteristics("C", true, getAllTeacherNames(), new LinkedList<String>(Arrays.asList("E", "B")), emptyStringList);
+		checkStudentCharacteristics("D", true, getAllTeacherNames(), emptyStringList, emptyStringList);
+		checkStudentCharacteristics("E", false, new LinkedList<String>(Arrays.asList("Miss One")), emptyStringList, emptyStringList);
+		checkStudentCharacteristics("F", false, new LinkedList<String>(Arrays.asList("Miss One")), emptyStringList, emptyStringList);
+		
+	}
+	
 	private void checkStudentCharacteristics(String name, boolean isFemale, LinkedList<String> allowedTeachers,
 			LinkedList<String> requiredStudents, LinkedList<String> forbiddenStudents)
 					throws SearchingException {
