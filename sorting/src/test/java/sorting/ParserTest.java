@@ -79,8 +79,8 @@ public class ParserTest {
 		assertTrue(SheetDissector.getClassroomByName("Mr Two").IsIEP());
 
 		checkStudentCharacteristics("A", true, getAllTeacherNames(), emptyStringList, emptyStringList);
-		checkStudentCharacteristics("B", false, new LinkedList<String>(Arrays.asList("Miss One")), emptyStringList, emptyStringList);
-		checkStudentCharacteristics("C", true, getAllTeacherNames(), emptyStringList, emptyStringList);
+		checkStudentCharacteristics("B", true, new LinkedList<String>(Arrays.asList("Miss One")), emptyStringList, emptyStringList);
+		checkStudentCharacteristics("C", false, getAllTeacherNames(), emptyStringList, emptyStringList);
 		checkStudentCharacteristics("D", true, getAllTeacherNames(), emptyStringList, emptyStringList);
 		checkStudentCharacteristics("E", false, new LinkedList<String>(Arrays.asList("Miss One")), emptyStringList, emptyStringList);
 		checkStudentCharacteristics("F", false, new LinkedList<String>(Arrays.asList("Miss One")), emptyStringList, emptyStringList);

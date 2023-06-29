@@ -8,7 +8,7 @@ public class Classroom {
 	private final LinkedList<String> studentNames = new LinkedList<String>();
 	private boolean isEll;
 	private boolean isIEP;
-	
+	private int totalFemaleStudents = 0;
 	
 	public Classroom(String teacher) {
 		this.teacherName = teacher;
@@ -34,8 +34,10 @@ public class Classroom {
 		return isIEP;
 	}
 
-	public void addStudent(String name) {
+	public void addStudent(String name, boolean isFemale) {
 		studentNames.add(name);
+		if (isFemale)
+			totalFemaleStudents++;
 	}
 
 	public LinkedList<String> getStudentNames() {
@@ -43,7 +45,14 @@ public class Classroom {
 		return studentNames;
 	}
 
-	public void removeStudent(String name) {
+	public void removeStudent(String name, boolean isFemale) {
 		studentNames.remove(name);
+		if (isFemale)
+			totalFemaleStudents--;
+	}
+
+	public int getTotalFemaleStudents() {
+		// TODO Auto-generated method stub
+		return totalFemaleStudents;
 	}
 }

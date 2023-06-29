@@ -180,5 +180,14 @@ public class SheetDissector {
 		}
 		throw new SearchingException("No student with name " + studentName);
 	}
+
+	public static int getTotalFemaleStudents() {
+		int total = 0;
+		for (Student student : students) {
+			if (student.IsFemale())
+				total++;
+		}
+		return total;
+	}
 	
 }
