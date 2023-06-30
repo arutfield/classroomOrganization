@@ -62,6 +62,10 @@ public class ClassroomSorter {
 			allowedTeachers.clear();
 			allowedTeachers.add(teacherWithFriend);
 		}
+		if (student.getName().equals("Eight")) {
+			for (String teacherName : allowedTeachers)
+				System.out.println("potential teacher: " + teacherName);
+		}
 		for (String teacherName : allowedTeachers) {
 			if (studentIsAllowedInClass(student.getName(), teacherName, actualInitialClasses)) {
 				for (Classroom classroom : actualInitialClasses)

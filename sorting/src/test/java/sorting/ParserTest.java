@@ -52,13 +52,13 @@ public class ParserTest {
 		LinkedList<String> mrAMissingList = new LinkedList<String>(Arrays.asList("Ms B.", "Mrs C."));
 		checkStudentCharacteristics("Two", true, mrAList, emptyStringList, twoForbiddenList);
 		checkStudentCharacteristics("Three", true, mrAList, emptyStringList, emptyStringList);
-		checkStudentCharacteristics("Four", true, mrAMissingList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Four", true, mrAMissingList, emptyStringList, new LinkedList<String>(Arrays.asList("Eleven")));
 		checkStudentCharacteristics("Five", false, getAllTeacherNames(), emptyStringList, emptyStringList);
 		checkStudentCharacteristics("Six", false, getAllTeacherNames(), new LinkedList<String>(Arrays.asList("Eight")), emptyStringList);
 		checkStudentCharacteristics("Seven", true, getAllTeacherNames(), emptyStringList, emptyStringList);
 		checkStudentCharacteristics("Eight", false, mrsCList, emptyStringList, emptyStringList);
 		checkStudentCharacteristics("Nine", false, getAllTeacherNames(), emptyStringList, emptyStringList);
-		checkStudentCharacteristics("Ten", true, mrsCList, emptyStringList, new LinkedList<String>(Arrays.asList("Eleven")));
+		checkStudentCharacteristics("Ten", true, mrsCList, emptyStringList, emptyStringList);
 		checkStudentCharacteristics("Eleven", true, mrsCList, emptyStringList, emptyStringList);
 		checkStudentCharacteristics("Twelve", true, getAllTeacherNames(), emptyStringList, emptyStringList);
 		checkStudentCharacteristics("Thirteen", false, getAllTeacherNames(), new LinkedList<String>(Arrays.asList("Eleven")), emptyStringList);

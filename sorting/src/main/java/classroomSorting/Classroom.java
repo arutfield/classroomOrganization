@@ -52,7 +52,17 @@ public class Classroom {
 	}
 
 	public int getTotalFemaleStudents() {
-		// TODO Auto-generated method stub
 		return totalFemaleStudents;
+	}
+	
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder("Teacher: ");
+		stringBuilder.append(teacherName);
+		stringBuilder.append(", students:");
+		for (String studentName : studentNames) {
+			stringBuilder.append(" " + studentName + ",");
+		}
+		return stringBuilder.toString();
+		
 	}
 }

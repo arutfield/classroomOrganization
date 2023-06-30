@@ -34,9 +34,13 @@ public class SolverTest {
 		SheetDissector.ParseSheet("src\\test\\resources\\sampleClassToArrange.xlsx");
 		LinkedList<Classroom> result = ClassroomSorter.solveClassrooms();
 		assertEquals(3, result.size());
+		int totalFemaleStudents = 0;
 		for (Classroom classroom : result) {
 			assertEquals(5, classroom.getStudentNames().size());
+			totalFemaleStudents += classroom.getTotalFemaleStudents();
+			assertTrue(classroom.getTotalFemaleStudents() == 3 || classroom.getTotalFemaleStudents() == 2);
 		}
+		assertEquals(7, totalFemaleStudents);
 	}
 	
 	private void compareStringLists(LinkedList<String> actual, LinkedList<String> calculated) {
