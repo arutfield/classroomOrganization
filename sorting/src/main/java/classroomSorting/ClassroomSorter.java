@@ -59,8 +59,13 @@ public class ClassroomSorter {
 		
 		LinkedList<String> allowedTeachers = student.getAllowedTeachers();
 		if (teacherWithFriend != null) {
-			allowedTeachers.clear();
-			allowedTeachers.add(teacherWithFriend);
+			if (!allowedTeachers.contains(teacherWithFriend))
+				return null;
+			else
+			{
+				allowedTeachers.clear();
+				allowedTeachers.add(teacherWithFriend);
+			}
 		}
 		if (student.getName().equals("Eight")) {
 			for (String teacherName : allowedTeachers)
