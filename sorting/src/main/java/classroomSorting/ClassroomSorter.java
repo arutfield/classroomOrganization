@@ -14,7 +14,8 @@ public class ClassroomSorter {
 		LinkedList<Classroom> emptyClasses = SheetDissector.getClasses();
 		LinkedList<Student> students = SheetDissector.getStudents();
 		mostAllowedInClass = (int) Math.ceil((double) students.size() / emptyClasses.size());
-		mostFemaleStudentsAllowedPerClass = (double) SheetDissector.getTotalFemaleStudents() / (double) emptyClasses.size() + 1.0/(double) emptyClasses.size();
+		mostFemaleStudentsAllowedPerClass = (SheetDissector.getTotalFemaleStudents() % SheetDissector.getClasses().size() == 0) ?
+				(SheetDissector.getTotalFemaleStudents() / SheetDissector.getClasses().size()) : Math.ceil((double) SheetDissector.getTotalFemaleStudents() / (double) emptyClasses.size());
 		mostNotFemaleStudentsAllowedPerClass = (double) (SheetDissector.getStudents().size() - SheetDissector.getTotalFemaleStudents()) / (double) emptyClasses.size() + 1.0/(double) emptyClasses.size();
 		return attemptToPlaceStudent(students, emptyClasses);
 		
