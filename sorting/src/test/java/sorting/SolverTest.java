@@ -21,20 +21,20 @@ public class SolverTest {
 	@Test
 	public void TestSolverSmallList() throws IOException, ClassSetupException, SearchingException {
 		SheetDissector.ParseSheet("src\\test\\resources\\smallClass.xlsx");
-		LinkedList<Classroom> result = ClassroomSorter.solveClassrooms();
+		Classroom[] result = ClassroomSorter.solveClassrooms();
 		
-		assertEquals(2, result.size());
-		compareStringLists(result.get(0).getStudentNames(), new LinkedList<String>(Arrays.asList("E", "F", "B")));
-		compareStringLists(result.get(1).getStudentNames(), new LinkedList<String>(Arrays.asList("A", "C", "D")));
-		assertEquals("Miss One", result.get(0).getTeacherName());
-		assertEquals("Mr Two", result.get(1).getTeacherName());
+		assertEquals(2, result.length);
+		compareStringLists(result[0].getStudentNames(), new LinkedList<String>(Arrays.asList("E", "F", "B")));
+		compareStringLists(result[1].getStudentNames(), new LinkedList<String>(Arrays.asList("A", "C", "D")));
+		assertEquals("Miss One", result[0].getTeacherName());
+		assertEquals("Mr Two", result[1].getTeacherName());
 	}
 	
 	@Test
 	public void TestSampleOf15Students() throws IOException, ClassSetupException, SearchingException {
 		SheetDissector.ParseSheet("src\\test\\resources\\sampleClassToArrange.xlsx");
-		LinkedList<Classroom> result = ClassroomSorter.solveClassrooms();
-		assertEquals(3, result.size());
+		Classroom[] result = ClassroomSorter.solveClassrooms();
+		assertEquals(3, result.length);
 		int totalFemaleStudents = 0;
 		for (Classroom classroom : result) {
 			assertEquals(5, classroom.getStudentNames().size());
@@ -70,8 +70,8 @@ public class SolverTest {
 	@Test
 	public void TestUnevenClasses() throws IOException, ClassSetupException, SearchingException {
 		SheetDissector.ParseSheet("src\\test\\resources\\unevenClasses.xlsx");
-		LinkedList<Classroom> result = ClassroomSorter.solveClassrooms();
-		assertEquals(3, result.size());
+		Classroom[] result = ClassroomSorter.solveClassrooms();
+		assertEquals(3, result.length);
 		int totalFemaleStudents = 0;
 		for (Classroom classroom : result) {
 			assertTrue(classroom.getStudentNames().size() == 5 || classroom.getStudentNames().size() == 6);
@@ -104,12 +104,12 @@ public class SolverTest {
 	}
 
 	
-	/*@Test
+	@Test
 	public void TestSampleOfManyStudents() throws IOException, ClassSetupException, SearchingException {
 		SheetDissector.ParseSheet("src\\test\\resources\\BigClass.xlsx");
-		LinkedList<Classroom> result = ClassroomSorter.solveClassrooms();
-		assertEquals(3, result.size());
-	}*/
+		Classroom[] result = ClassroomSorter.solveClassrooms();
+		assertEquals(3, result.length);
+	}
 	
 	private void compareStringLists(LinkedList<String> actual, LinkedList<String> calculated) {
 		assertEquals(actual.size(), calculated.size());

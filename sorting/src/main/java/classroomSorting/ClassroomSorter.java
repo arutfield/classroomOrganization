@@ -1,5 +1,6 @@
 package classroomSorting;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 
 import exceptions.SearchingException;
@@ -12,28 +13,28 @@ public class ClassroomSorter {
 	private static double mostFemaleStudentsAllowedPerClass;
 	private static double mostNotFemaleStudentsAllowedPerClass;
 
-	public static LinkedList<Classroom> solveClassrooms() throws SearchingException {
-		LinkedList<Classroom> emptyClasses = SheetDissector.getClasses();
-		LinkedList<Student> students = SheetDissector.getStudents();
-		mostAllowedInClass = (int) Math.ceil((double) students.size() / emptyClasses.size());
-		minAllowedInClass = (int) Math.floorDiv(students.size(), emptyClasses.size());
-		extraStudents = students.size() % emptyClasses.size();
+	public static Classroom[] solveClassrooms() throws SearchingException {
+		Classroom[] emptyClasses = SheetDissector.getClasses();
+		Student[] students = SheetDissector.getStudents();
+		mostAllowedInClass = (int) Math.ceil((double) students.length / emptyClasses.length);
+		minAllowedInClass = (int) Math.floorDiv(students.length, emptyClasses.length);
+		extraStudents = students.length % emptyClasses.length;
 		if (extraStudents == 0)
-			extraStudents = emptyClasses.size();
+			extraStudents = emptyClasses.length;
 		mostFemaleStudentsAllowedPerClass = (SheetDissector.getTotalFemaleStudents()
-				% SheetDissector.getClasses().size() == 0)
-						? (SheetDissector.getTotalFemaleStudents() / SheetDissector.getClasses().size())
-						: Math.ceil((double) SheetDissector.getTotalFemaleStudents() / (double) emptyClasses.size());
-		mostNotFemaleStudentsAllowedPerClass = (double) (SheetDissector.getStudents().size()
-				- SheetDissector.getTotalFemaleStudents()) / (double) emptyClasses.size()
-				+ 1.0 / (double) emptyClasses.size();
-		return attemptToPlaceStudent(students, emptyClasses);
+				% SheetDissector.getClasses().length == 0)
+						? (SheetDissector.getTotalFemaleStudents() / SheetDissector.getClasses().length)
+						: Math.ceil((double) SheetDissector.getTotalFemaleStudents() / (double) emptyClasses.length);
+		mostNotFemaleStudentsAllowedPerClass = (double) (SheetDissector.getStudents().length
+				- SheetDissector.getTotalFemaleStudents()) / (double) emptyClasses.length
+				+ 1.0 / (double) emptyClasses.length;
+		return attemptToPlaceStudent(new LinkedList<Student>(Arrays.asList(students)), emptyClasses);
 
 	}
 
-	private static LinkedList<Classroom> attemptToPlaceStudent(LinkedList<Student> students,
-			LinkedList<Classroom> initialClasses) throws SearchingException {
-		LinkedList<Classroom> actualInitialClasses = (LinkedList<Classroom>) initialClasses.clone();
+	private static Classroom[] attemptToPlaceStudent(LinkedList<Student> students,
+			Classroom[] initialClasses) throws SearchingException {
+		Classroom[] actualInitialClasses = initialClasses.clone();
 		LinkedList<Student> actualStudents = (LinkedList<Student>) students.clone();
 		if (actualStudents.isEmpty())
 			return actualInitialClasses;
@@ -85,7 +86,7 @@ public class ClassroomSorter {
 							break;
 						}
 						classroom.addStudent(student.getName(), student.IsFemale());
-						LinkedList<Classroom> solution = attemptToPlaceStudent(actualStudents, actualInitialClasses);
+						Classroom[] solution = attemptToPlaceStudent(actualStudents, actualInitialClasses);
 						if (solution != null)
 							return solution;
 						classroom.removeStudent(student.getName(), student.IsFemale());
@@ -97,7 +98,7 @@ public class ClassroomSorter {
 	}
 
 	private static boolean studentIsAllowedInClass(String studentName, String teacherName,
-			LinkedList<Classroom> currentClasses) throws SearchingException {
+			Classroom[] currentClasses) throws SearchingException {
 		Classroom currentClassroom = null;
 		for (Classroom classroom : currentClasses)
 			if (classroom.getTeacherName().equals(teacherName)) {
@@ -123,7 +124,7 @@ public class ClassroomSorter {
 		return true;
 	}
 
-	private static int classesAtMaximum(LinkedList<Classroom> currentClasses) {
+	private static int classesAtMaximum(Classroom[] currentClasses) {
 		int atMaxCapacity = 0;
 		for (Classroom classroom : currentClasses) {
 			if (classroom.getStudentNames().size() == mostAllowedInClass)

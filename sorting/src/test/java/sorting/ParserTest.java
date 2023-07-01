@@ -25,8 +25,8 @@ public class ParserTest {
 		System.out.println("dir: " + System.getProperty("user.dir"));
 		SheetDissector.ParseSheet("src\\test\\resources\\sampleClassToArrange.xlsx");
 		
-		assertEquals(3, SheetDissector.getClasses().size());
-		assertEquals(15, SheetDissector.getStudents().size());
+		assertEquals(3, SheetDissector.getClasses().length);
+		assertEquals(15, SheetDissector.getStudents().length);
 		assertTrue(SheetDissector.getClassroomByName("Mr A.").IsEll());
 		assertFalse(SheetDissector.getClassroomByName("Mr A.").IsIEP());
 		assertFalse(SheetDissector.getClassroomByName("Ms B.").IsEll());
@@ -41,8 +41,8 @@ public class ParserTest {
 	public void TestParserStudents() throws IOException, ClassSetupException, SearchingException {
 		SheetDissector.ParseSheet("src\\test\\resources\\sampleClassToArrange.xlsx");
 		
-		assertEquals(3, SheetDissector.getClasses().size());
-		assertEquals(15, SheetDissector.getStudents().size());
+		assertEquals(3, SheetDissector.getClasses().length);
+		assertEquals(15, SheetDissector.getStudents().length);
 		
 		checkStudentCharacteristics("One", false, getAllTeacherNames(), emptyStringList, emptyStringList);
 		
@@ -70,8 +70,8 @@ public class ParserTest {
 	public void TestParserSmallList() throws IOException, ClassSetupException, SearchingException {
 		SheetDissector.ParseSheet("src\\test\\resources\\smallClass.xlsx");
 		
-		assertEquals(2, SheetDissector.getClasses().size());
-		assertEquals(6, SheetDissector.getStudents().size());
+		assertEquals(2, SheetDissector.getClasses().length);
+		assertEquals(6, SheetDissector.getStudents().length);
 		
 		assertTrue(SheetDissector.getClassroomByName("Miss One").IsEll());
 		assertFalse(SheetDissector.getClassroomByName("Miss One").IsIEP());
