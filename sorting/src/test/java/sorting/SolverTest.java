@@ -65,6 +65,51 @@ public class SolverTest {
 		assertEquals(7, totalFemaleStudents);
 
 	}
+
+	
+	@Test
+	public void TestUnevenClasses() throws IOException, ClassSetupException, SearchingException {
+		SheetDissector.ParseSheet("src\\test\\resources\\unevenClasses.xlsx");
+		LinkedList<Classroom> result = ClassroomSorter.solveClassrooms();
+		assertEquals(3, result.size());
+		int totalFemaleStudents = 0;
+		for (Classroom classroom : result) {
+			assertTrue(classroom.getStudentNames().size() == 5 || classroom.getStudentNames().size() == 6);
+			totalFemaleStudents += classroom.getTotalFemaleStudents();
+			assertTrue(classroom.getTotalFemaleStudents() == 3 || classroom.getTotalFemaleStudents() == 2);
+			if (classroom.getTeacherName().equals("Mr A.")) {
+				assertTrue(classroom.getStudentNames().contains("Three"));
+				assertFalse(classroom.getStudentNames().contains("Four"));
+				assertTrue(classroom.getStudentNames().contains("Two"));
+				assertTrue(classroom.getStudentNames().contains("Fourteen"));		
+				assertFalse(classroom.getStudentNames().contains("One"));
+			} else if (classroom.getTeacherName().equals("Ms B.")) {
+				assertFalse(classroom.getStudentNames().contains("Sixteen"));
+			} else if (classroom.getTeacherName().equals("Mrs C.")) {
+				assertTrue(classroom.getStudentNames().contains("Ten"));
+				assertTrue(classroom.getStudentNames().contains("Eleven"));
+				assertTrue(classroom.getStudentNames().contains("Eight"));
+			}
+			if (classroom.getStudentNames().contains("Two"))
+				assertFalse(classroom.getStudentNames().contains("One"));
+			if (classroom.getStudentNames().contains("Four"))
+				assertFalse(classroom.getStudentNames().contains("Eleven"));
+			if (classroom.getStudentNames().contains("Six"))
+				assertTrue(classroom.getStudentNames().contains("Eight"));
+			if (classroom.getStudentNames().contains("Thirteen"))
+				assertTrue(classroom.getStudentNames().contains("Eleven"));			
+		}
+		assertEquals(8, totalFemaleStudents);
+
+	}
+
+	
+	/*@Test
+	public void TestSampleOfManyStudents() throws IOException, ClassSetupException, SearchingException {
+		SheetDissector.ParseSheet("src\\test\\resources\\BigClass.xlsx");
+		LinkedList<Classroom> result = ClassroomSorter.solveClassrooms();
+		assertEquals(3, result.size());
+	}*/
 	
 	private void compareStringLists(LinkedList<String> actual, LinkedList<String> calculated) {
 		assertEquals(actual.size(), calculated.size());
