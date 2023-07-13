@@ -35,7 +35,7 @@ public class SheetDissector {
 	}
 
 	
-	public static void ParseSheet(String file) throws IOException, ClassSetupException {
+	public static void ParseSheet(String file) throws IOException, ClassSetupException, SearchingException {
 		LinkedList<Classroom> classesList = new LinkedList<Classroom>();
 		LinkedList<Student> studentsList = new LinkedList<Student>();
 		LinkedList<String> teacherNames = new LinkedList<String>();
@@ -104,11 +104,12 @@ public class SheetDissector {
 	}
 	
 	private static Student createStudent(Row row, LinkedList<String> teacherNames, LinkedList<Classroom> classes,
-			LinkedList<String> studentCharacteristicsList) throws ClassSetupException {
+			LinkedList<String> studentCharacteristicsList) throws ClassSetupException, SearchingException {
 		Student newStudent = null;
 		for (int i = 0; i < row.getLastCellNum(); i++) {
 			if (i == 0) {
-				newStudent = new Student(row.getCell(i).getStringCellValue(), teacherNames);
+				Integer newStudentId = NumberReference.addStudent(row.getCell(i).getStringCellValue());
+				newStudent = new Student(newStudentId, teacherNames);
 				continue;
 			}
 			Cell subCell = row.getCell(i);
@@ -180,12 +181,12 @@ public class SheetDissector {
 		throw new SearchingException("No class with name " + teacher);
 	}
 
-	public static Student getStudentByName(String studentName) throws SearchingException {
+	public static Student getStudentById(Integer id) throws SearchingException {
 		for (Student stu : SheetDissector.getStudents()) {
-			if (stu.getName().equals(studentName))
+			if (stu.getId() == id)
 				return stu;
 		}
-		throw new SearchingException("No student with name " + studentName);
+		throw new SearchingException("No student with id " + id);
 	}
 
 	public static int getTotalFemaleStudents() {

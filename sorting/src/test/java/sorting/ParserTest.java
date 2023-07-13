@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import org.junit.Test;
 
 import classroomSorting.Classroom;
+import classroomSorting.NumberReference;
 import classroomSorting.SheetDissector;
 import classroomSorting.Student;
 import exceptions.ClassSetupException;
@@ -18,7 +19,7 @@ import exceptions.SearchingException;
 
 public class ParserTest {
 	private static final LinkedList<String> emptyStringList = new LinkedList<String>();
-	
+	private static final LinkedList<Integer> emptyIntegerList = new LinkedList<Integer>();
 
 	@Test
 	public void TestParserTeachers() throws IOException, ClassSetupException, SearchingException {
@@ -90,12 +91,22 @@ public class ParserTest {
 	private void checkStudentCharacteristics(String name, boolean isFemale, LinkedList<String> allowedTeachers,
 			LinkedList<String> requiredStudents, LinkedList<String> forbiddenStudents)
 					throws SearchingException {
-		Student student = SheetDissector.getStudentByName(name);
+		
+		
+		
+		Student student = SheetDissector.getStudentById(NumberReference.findStudentNumberByName(name));
 		assertEquals(isFemale, student.IsFemale());
 		compareStringLists(allowedTeachers, student.getAllowedTeachers());
-		compareStringLists(requiredStudents, student.getRequiredStudents());
-		compareStringLists(forbiddenStudents, student.getForbiddenStudents());
+		compareIntegerLists(convertStringStudentsToNumber(requiredStudents), student.getRequiredStudents());
+		compareIntegerLists(convertStringStudentsToNumber(forbiddenStudents), student.getForbiddenStudents());
 
+	}
+	
+	private LinkedList<Integer> convertStringStudentsToNumber(LinkedList<String> studentList) throws SearchingException{
+		LinkedList<Integer> studentsIntegerList = new LinkedList<Integer>();
+		for (String studentName : studentList)
+			studentsIntegerList.add(NumberReference.findStudentNumberByName(studentName));
+		return studentsIntegerList;
 	}
 	
 	private void compareStringLists(LinkedList<String> actual, LinkedList<String> calculated) {
@@ -103,6 +114,13 @@ public class ParserTest {
 		for (String string : actual)
 			assertTrue(calculated.contains(string));
 	}
+
+	private void compareIntegerLists(LinkedList<Integer> actual, LinkedList<Integer> calculated) {
+		assertEquals(actual.size(), calculated.size());
+		for (Integer actualInt : actual)
+			assertTrue(calculated.contains(actualInt));
+	}
+
 	
 	private LinkedList<String> getAllTeacherNames(){
 		LinkedList<String> names = new LinkedList<String>();
