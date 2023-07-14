@@ -88,12 +88,45 @@ public class ParserTest {
 		
 	}
 	
+	@Test
+	public void TestParserLargeList() throws IOException, ClassSetupException, SearchingException {
+		LinkedList<String> nList = new LinkedList<String>(Arrays.asList("Ms N"));
+		LinkedList<String> sList = new LinkedList<String>(Arrays.asList("Ms S"));
+		LinkedList<String> lList = new LinkedList<String>(Arrays.asList("Ms L"));
+
+		LinkedList<String> nsList = new LinkedList<String>(Arrays.asList("Ms N", "Ms S"));
+		LinkedList<String> lsList = new LinkedList<String>(Arrays.asList("Ms L", "Ms S"));
+		LinkedList<String> nslList = new LinkedList<String>(Arrays.asList("Ms N", "Ms S", "Ms L"));
+
+		SheetDissector.ParseSheet("src\\test\\resources\\BigClass.xlsx");
+		
+		assertEquals(3, SheetDissector.getClasses().length);
+		assertEquals(51, SheetDissector.getStudents().length);
+		
+		assertTrue(SheetDissector.getClassroomByName("Ms N").IsIEP());
+		assertFalse(SheetDissector.getClassroomByName("Ms S").IsIEP());
+		assertFalse(SheetDissector.getClassroomByName("Ms N").IsEll());
+		assertTrue(SheetDissector.getClassroomByName("Ms S").IsEll());
+		assertFalse(SheetDissector.getClassroomByName("Ms L").IsIEP());
+		assertFalse(SheetDissector.getClassroomByName("Ms L").IsEll());
+
+		checkStudentCharacteristics("One", false, nList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Two", true, sList, emptyStringList, new LinkedList<String>(Arrays.asList("Eighteen")));
+		checkStudentCharacteristics("Three", true, nList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Four", true, lsList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Five", false, lList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Six", false, sList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Seven", true, nslList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Eight", false, sList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Nine", false, nList, new LinkedList<String>(Arrays.asList("Forty", "Fifty")), emptyStringList);
+		checkStudentCharacteristics("Ten", true, nslList, emptyStringList, emptyStringList);
+
+		
+	}
+	
 	private void checkStudentCharacteristics(String name, boolean isFemale, LinkedList<String> allowedTeachers,
 			LinkedList<String> requiredStudents, LinkedList<String> forbiddenStudents)
 					throws SearchingException {
-		
-		
-		
 		Student student = SheetDissector.getStudentById(NumberReference.findStudentNumberByName(name));
 		assertEquals(isFemale, student.IsFemale());
 		compareStringLists(allowedTeachers, student.getAllowedTeachers());
