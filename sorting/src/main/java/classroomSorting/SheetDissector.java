@@ -23,21 +23,21 @@ import exceptions.ClassSetupException;
 import exceptions.SearchingException;
 
 public class SheetDissector {
-	private static LinkedList<Classroom> classes;
-	private static LinkedList<Student> students;
+	private static Classroom[] classes;
+	private static Student[] students;
 
-	public static LinkedList<Classroom> getClasses() {
+	public static Classroom[] getClasses() {
 		return classes;
 	}
 
-	public static LinkedList<Student> getStudents() {
+	public static Student[] getStudents() {
 		return students;
 	}
 
 	
-	public static void ParseSheet(String file) throws IOException, ClassSetupException {
-		classes = new LinkedList<Classroom>();
-		students = new LinkedList<Student>();
+	public static void ParseSheet(String file) throws IOException, ClassSetupException, SearchingException {
+		LinkedList<Classroom> classesList = new LinkedList<Classroom>();
+		LinkedList<Student> studentsList = new LinkedList<Student>();
 		LinkedList<String> teacherNames = new LinkedList<String>();
 		FileInputStream fis = new FileInputStream(new File(file));
 		XSSFWorkbook workbook = new XSSFWorkbook(fis);
@@ -64,7 +64,7 @@ public class SheetDissector {
 					continue;
 				}
 				if (cellValue.toLowerCase().equals("teachers")) {
-					if (!classes.isEmpty())
+					if (!classesList.isEmpty())
 						throw new ClassSetupException("Cannot have multiple teacher sections");
 					else {
 						isInTeacherSection = true;
@@ -81,10 +81,10 @@ public class SheetDissector {
 						else if (subCell.getStringCellValue().toLowerCase().equals("iep"))
 							newClassroom.enableIEP();
 					}
-					classes.add(newClassroom);
+					classesList.add(newClassroom);
 				}
 				if (isInStudentSection) {
-					students.add(createStudent(row, teacherNames, classes, studentCharacteristicsList));
+					studentsList.add(createStudent(row, teacherNames, classesList, studentCharacteristicsList));
 				}
 				break;
 			default:
@@ -92,16 +92,24 @@ public class SheetDissector {
 			}
 
 		}
+		
+		students = new Student[studentsList.size()];
+		for (int i=0; i<studentsList.size(); i++)
+			students[i] = studentsList.get(i);
+		classes = new Classroom[classesList.size()];
+		for (int i=0; i<classesList.size(); i++)
+			classes[i] = classesList.get(i);
 		workbook.close();
 
 	}
 	
 	private static Student createStudent(Row row, LinkedList<String> teacherNames, LinkedList<Classroom> classes,
-			LinkedList<String> studentCharacteristicsList) throws ClassSetupException {
+			LinkedList<String> studentCharacteristicsList) throws ClassSetupException, SearchingException {
 		Student newStudent = null;
 		for (int i = 0; i < row.getLastCellNum(); i++) {
 			if (i == 0) {
-				newStudent = new Student(row.getCell(i).getStringCellValue(), teacherNames);
+				Integer newStudentId = NumberReference.addStudent(row.getCell(i).getStringCellValue());
+				newStudent = new Student(newStudentId, teacherNames);
 				continue;
 			}
 			Cell subCell = row.getCell(i);
@@ -173,12 +181,12 @@ public class SheetDissector {
 		throw new SearchingException("No class with name " + teacher);
 	}
 
-	public static Student getStudentByName(String studentName) throws SearchingException {
+	public static Student getStudentById(Integer id) throws SearchingException {
 		for (Student stu : SheetDissector.getStudents()) {
-			if (stu.getName().equals(studentName))
+			if (stu.getId() == id)
 				return stu;
 		}
-		throw new SearchingException("No student with name " + studentName);
+		throw new SearchingException("No student with id " + id);
 	}
 
 	public static int getTotalFemaleStudents() {

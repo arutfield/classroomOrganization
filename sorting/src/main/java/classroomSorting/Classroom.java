@@ -2,10 +2,12 @@ package classroomSorting;
 
 import java.util.LinkedList;
 
+import exceptions.SearchingException;
+
 public class Classroom {
 
 	private final String teacherName;
-	private final LinkedList<String> studentNames = new LinkedList<String>();
+	private final LinkedList<Integer> studentIds = new LinkedList<Integer>();
 	private boolean isEll;
 	private boolean isIEP;
 	private int totalFemaleStudents = 0;
@@ -34,19 +36,18 @@ public class Classroom {
 		return isIEP;
 	}
 
-	public void addStudent(String name, boolean isFemale) {
-		studentNames.add(name);
+	public void addStudent(Integer id, boolean isFemale) throws SearchingException {
+		studentIds.add(id);
 		if (isFemale)
 			totalFemaleStudents++;
 	}
 
-	public LinkedList<String> getStudentNames() {
-		
-		return studentNames;
+	public LinkedList<Integer> getStudentIds() {	
+		return studentIds;
 	}
 
-	public void removeStudent(String name, boolean isFemale) {
-		studentNames.remove(name);
+	public void removeStudent(Integer id, boolean isFemale) throws SearchingException {
+		studentIds.remove(id);
 		if (isFemale)
 			totalFemaleStudents--;
 	}
@@ -59,8 +60,8 @@ public class Classroom {
 		StringBuilder stringBuilder = new StringBuilder("Teacher: ");
 		stringBuilder.append(teacherName);
 		stringBuilder.append(", students:");
-		for (String studentName : studentNames) {
-			stringBuilder.append(" " + studentName + ",");
+		for (Integer studentId : studentIds) {
+			stringBuilder.append(" " + NumberReference.findStudentNameByNumber(studentId) + ",");
 		}
 		return stringBuilder.toString();
 		
