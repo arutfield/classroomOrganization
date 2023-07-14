@@ -59,9 +59,14 @@ public class Classroom {
 	public String toString() {
 		StringBuilder stringBuilder = new StringBuilder("Teacher: ");
 		stringBuilder.append(teacherName);
-		stringBuilder.append(", students:");
+		stringBuilder.append("\n  students:\n");
 		for (Integer studentId : studentIds) {
-			stringBuilder.append(" " + NumberReference.findStudentNameByNumber(studentId) + ",");
+			try {
+				stringBuilder.append("   " + SheetDissector.getStudentById(studentId).toString() + "\n");
+			} catch (SearchingException e) {
+				e.printStackTrace();
+				return "";
+			}
 		}
 		return stringBuilder.toString();
 		

@@ -59,6 +59,33 @@ public class Student {
 	public LinkedList<Integer> getForbiddenStudents() {
 		return forbiddenStudents;
 	}
+	
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder(NumberReference.findStudentNameByNumber(id) + ": ");
+		stringBuilder.append("ID: " + id);
+		stringBuilder.append(", ");
+		stringBuilder.append(isFemale ? "female" : "not female");
+		stringBuilder.append(", allowed in ");
+		for (int i=0; i<allowedTeachers.size(); i++) {
+			stringBuilder.append(allowedTeachers.get(i));
+			if (i < allowedTeachers.size() - 1)
+				stringBuilder.append(", ");
+			
+		}
+		stringBuilder.append(" classes");
+		stringBuilder.append(", friends with ");
+		if (requiredStudents.isEmpty())
+			stringBuilder.append("None, ");
+		for (Integer studentId : requiredStudents)
+			stringBuilder.append(NumberReference.findStudentNameByNumber(studentId) + ", ");
+		stringBuilder.append("doesn't get along with ");
+		if (forbiddenStudents.isEmpty())
+			stringBuilder.append("None, ");
+		for (Integer studentId : forbiddenStudents)
+			stringBuilder.append(NumberReference.findStudentNameByNumber(studentId) + ", ");
+		return stringBuilder.toString();
+		
+	}
 
 
 }
