@@ -34,7 +34,6 @@ public class SheetDissector {
 		return students;
 	}
 
-	
 	public static void ParseSheet(String file) throws IOException, ClassSetupException, SearchingException {
 		LinkedList<Classroom> classesList = new LinkedList<Classroom>();
 		LinkedList<Student> studentsList = new LinkedList<Student>();
@@ -92,17 +91,17 @@ public class SheetDissector {
 			}
 
 		}
-		
+
 		students = new Student[studentsList.size()];
-		for (int i=0; i<studentsList.size(); i++)
+		for (int i = 0; i < studentsList.size(); i++)
 			students[i] = studentsList.get(i);
 		classes = new Classroom[classesList.size()];
-		for (int i=0; i<classesList.size(); i++)
+		for (int i = 0; i < classesList.size(); i++)
 			classes[i] = classesList.get(i);
 		workbook.close();
 
 	}
-	
+
 	private static Student createStudent(Row row, LinkedList<String> teacherNames, LinkedList<Classroom> classes,
 			LinkedList<String> studentCharacteristicsList) throws ClassSetupException, SearchingException {
 		Student newStudent = null;
@@ -145,8 +144,7 @@ public class SheetDissector {
 									if (!currentClass.IsEll())
 										newStudent.addForbiddenTeacher(currentClass.getTeacherName());
 								}
-							}
-							else if (specialCategory.equals("IEP")) {
+							} else if (specialCategory.equals("IEP")) {
 								for (Classroom currentClass : classes) {
 									if (!currentClass.IsIEP())
 										newStudent.addForbiddenTeacher(currentClass.getTeacherName());
@@ -197,5 +195,5 @@ public class SheetDissector {
 		}
 		return total;
 	}
-	
+
 }

@@ -11,15 +11,15 @@ public class Classroom {
 	private boolean isEll;
 	private boolean isIEP;
 	private int totalFemaleStudents = 0;
-	
+
 	public Classroom(String teacher) {
 		this.teacherName = teacher;
 	}
-	
+
 	public void enableEll() {
 		isEll = true;
 	}
-	
+
 	public void enableIEP() {
 		isIEP = true;
 	}
@@ -42,7 +42,7 @@ public class Classroom {
 			totalFemaleStudents++;
 	}
 
-	public LinkedList<Integer> getStudentIds() {	
+	public LinkedList<Integer> getStudentIds() {
 		return studentIds;
 	}
 
@@ -55,7 +55,7 @@ public class Classroom {
 	public int getTotalFemaleStudents() {
 		return totalFemaleStudents;
 	}
-	
+
 	public String toString() {
 		StringBuilder stringBuilder = new StringBuilder("Teacher: ");
 		stringBuilder.append(teacherName);
@@ -69,6 +69,6 @@ public class Classroom {
 			}
 		}
 		return stringBuilder.toString();
-		
+
 	}
 }

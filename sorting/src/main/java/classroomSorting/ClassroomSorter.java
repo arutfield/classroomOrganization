@@ -32,8 +32,8 @@ public class ClassroomSorter {
 
 	}
 
-	private static Classroom[] attemptToPlaceStudent(LinkedList<Student> students,
-			Classroom[] initialClasses) throws SearchingException {
+	private static Classroom[] attemptToPlaceStudent(LinkedList<Student> students, Classroom[] initialClasses)
+			throws SearchingException {
 		Classroom[] actualInitialClasses = initialClasses.clone();
 		LinkedList<Student> actualStudents = (LinkedList<Student>) students.clone();
 		if (actualStudents.isEmpty())
@@ -82,7 +82,8 @@ public class ClassroomSorter {
 			if (studentIsAllowedInClass(student.getId(), teacherName, actualInitialClasses)) {
 				for (Classroom classroom : actualInitialClasses)
 					if (classroom.getTeacherName().equals(teacherName)) {
-						if (classesAtMaximum == extraStudents && classroom.getStudentIds().size() == mostAllowedInClass - 1) {
+						if (classesAtMaximum == extraStudents
+								&& classroom.getStudentIds().size() == mostAllowedInClass - 1) {
 							break;
 						}
 						classroom.addStudent(student.getId(), student.IsFemale());
@@ -97,8 +98,8 @@ public class ClassroomSorter {
 		return null;
 	}
 
-	private static boolean studentIsAllowedInClass(Integer studentId, String teacherName,
-			Classroom[] currentClasses) throws SearchingException {
+	private static boolean studentIsAllowedInClass(Integer studentId, String teacherName, Classroom[] currentClasses)
+			throws SearchingException {
 		Classroom currentClassroom = null;
 		for (Classroom classroom : currentClasses)
 			if (classroom.getTeacherName().equals(teacherName)) {
