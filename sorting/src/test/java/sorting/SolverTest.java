@@ -38,30 +38,22 @@ public class SolverTest {
 		assertEquals(3, result.length);
 		int totalFemaleStudents = 0;
 		for (Classroom classroom : result) {
-			assertEquals(5, classroom.getStudentIds().size());
+			LinkedList<Integer> studentIds = classroom.getStudentIds();
+			assertEquals(5, studentIds.size());
 			totalFemaleStudents += classroom.getTotalFemaleStudents();
 			assertTrue(classroom.getTotalFemaleStudents() == 3 || classroom.getTotalFemaleStudents() == 2);
 			if (classroom.getTeacherName().equals("Mr A.")) {
-				assertTrue(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Three")));
-				assertFalse(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Four")));
-				assertTrue(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Two")));
-				assertTrue(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Fourteen")));		
-				assertFalse(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("One")));
+				checkIfStudentsInClass(new LinkedList<String>(Arrays.asList("Three", "Two", "Fourteen")), studentIds);
+				checkIfStudentsNotInClass(new LinkedList<String>(Arrays.asList("Four", "One")), studentIds);
 			} else if (classroom.getTeacherName().equals("Ms B.")) {
 				
 			} else if (classroom.getTeacherName().equals("Mrs C.")) {
-				assertTrue(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Ten")));
-				assertTrue(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Eleven")));
-				assertTrue(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Eight")));
+				checkIfStudentsInClass(new LinkedList<String>(Arrays.asList("Ten", "Eleven", "Eight")), studentIds);
 			}
-			if (classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Two")))
-				assertFalse(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("One")));
-			if (classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Four")))
-				assertFalse(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Eleven")));
-			if (classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Six")))
-				assertTrue(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Eight")));
-			if (classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Thirteen")))
-				assertTrue(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Eleven")));			
+			hasNoEnemy(studentIds, "Two", "One");
+			hasNoEnemy(studentIds, "Four", "Eleven");
+			hasFriend(studentIds, "Six", "Eight");
+			hasFriend(studentIds, "Thirteen", "Eleven");
 		}
 		assertEquals(7, totalFemaleStudents);
 
@@ -75,30 +67,22 @@ public class SolverTest {
 		assertEquals(3, result.length);
 		int totalFemaleStudents = 0;
 		for (Classroom classroom : result) {
-			assertTrue(classroom.getStudentIds().size() == 5 || classroom.getStudentIds().size() == 6);
+			LinkedList<Integer> studentIds = classroom.getStudentIds();
+			assertTrue(studentIds.size() == 5 || studentIds.size() == 6);
 			totalFemaleStudents += classroom.getTotalFemaleStudents();
 			assertTrue(classroom.getTotalFemaleStudents() == 3 || classroom.getTotalFemaleStudents() == 2);
 			if (classroom.getTeacherName().equals("Mr A.")) {
-				assertTrue(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Three")));
-				assertFalse(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Four")));
-				assertTrue(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Two")));
-				assertTrue(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Fourteen")));		
-				assertFalse(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("One")));
+				checkIfStudentsInClass(new LinkedList<String>(Arrays.asList("Three", "Two", "Fourteen")), studentIds);
+				checkIfStudentsNotInClass(new LinkedList<String>(Arrays.asList("Four", "One")), studentIds);
 			} else if (classroom.getTeacherName().equals("Ms B.")) {
-				assertFalse(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Sixteen")));
+				checkIfStudentsNotInClass(new LinkedList<String>(Arrays.asList("Sixteen")), studentIds);
 			} else if (classroom.getTeacherName().equals("Mrs C.")) {
-				assertTrue(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Ten")));
-				assertTrue(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Eleven")));
-				assertTrue(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Eight")));
+				checkIfStudentsInClass(new LinkedList<String>(Arrays.asList("Ten", "Eleven", "Eight")), studentIds);
 			}
-			if (classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Two")))
-				assertFalse(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("One")));
-			if (classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Four")))
-				assertFalse(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Eleven")));
-			if (classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Six")))
-				assertTrue(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Eight")));
-			if (classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Thirteen")))
-				assertTrue(classroom.getStudentIds().contains(NumberReference.findStudentNumberByName("Eleven")));			
+			hasNoEnemy(studentIds, "Two", "One");
+			hasNoEnemy(studentIds, "Four", "Eleven");
+			hasFriend(studentIds, "Six", "Eight");
+			hasFriend(studentIds, "Thirteen", "Eleven");
 		}
 		assertEquals(8, totalFemaleStudents);
 
@@ -117,18 +101,18 @@ public class SolverTest {
 			totalFemaleStudents += classroom.getTotalFemaleStudents();
 			assertTrue(classroom.getTotalFemaleStudents() == 6 || classroom.getTotalFemaleStudents() == 7);
 			if (classroom.getTeacherName().equals("Ms N")) {
-				checkIfStudentsInClass(new LinkedList<String>(Arrays.asList("One", "Three", "Nine", "Twenty-one", "Twenty-six", "Thirty-six", "Thirty-seven", "Forty-three", "Forty-four", "Forty-six", "Fifty-one")), classroom);
-				checkIfStudentsNotInClass(new LinkedList<String>(Arrays.asList("Four", "Forty-two")), classroom);
+				checkIfStudentsInClass(new LinkedList<String>(Arrays.asList("One", "Three", "Nine", "Twenty-one", "Twenty-six", "Thirty-six", "Thirty-seven", "Forty-three", "Forty-four", "Forty-six", "Fifty-one")), studentIds);
+				checkIfStudentsNotInClass(new LinkedList<String>(Arrays.asList("Four", "Forty-two")), studentIds);
 				//based on requests
-				checkIfStudentsInClass(new LinkedList<String>(Arrays.asList("Forty", "Fifty")), classroom);
+				checkIfStudentsInClass(new LinkedList<String>(Arrays.asList("Forty", "Fifty")), studentIds);
 
 			} else if (classroom.getTeacherName().equals("Ms S")) {
-				checkIfStudentsInClass(new LinkedList<String>(Arrays.asList("Two", "Six", "Eight", "Fourteen", "Twenty", "Twenty-four", "Twenty-nine", "Thirty-four", "Thirty-eight", "Thirty-nine", "Forty-one")), classroom);
-				checkIfStudentsNotInClass(new LinkedList<String>(Arrays.asList("Twelve", "Thirteen")), classroom);
-				checkIfStudentsInClass(new LinkedList<String>(Arrays.asList("Thirty")), classroom);
+				checkIfStudentsInClass(new LinkedList<String>(Arrays.asList("Two", "Six", "Eight", "Fourteen", "Twenty", "Twenty-four", "Twenty-nine", "Thirty-four", "Thirty-eight", "Thirty-nine", "Forty-one")), studentIds);
+				checkIfStudentsNotInClass(new LinkedList<String>(Arrays.asList("Twelve", "Thirteen")), studentIds);
+				checkIfStudentsInClass(new LinkedList<String>(Arrays.asList("Thirty")), studentIds);
 			} else if (classroom.getTeacherName().equals("Ms L")) {
-				checkIfStudentsInClass(new LinkedList<String>(Arrays.asList("Five", "Seventeen")), classroom);
-				checkIfStudentsNotInClass(new LinkedList<String>(Arrays.asList("Twenty-nine", "Fifty-one")), classroom);
+				checkIfStudentsInClass(new LinkedList<String>(Arrays.asList("Five", "Seventeen")), studentIds);
+				checkIfStudentsNotInClass(new LinkedList<String>(Arrays.asList("Twenty-nine", "Fifty-one")), studentIds);
 			}
 			hasFriend(studentIds, "Fifteen", "Ten");
 			hasFriend(studentIds, "Thirty-three", "One");
@@ -156,15 +140,13 @@ public class SolverTest {
 	}
 
 	
-	private void checkIfStudentsInClass(LinkedList<String> students, Classroom classroom) {
-		LinkedList<Integer> studentIds = classroom.getStudentIds();
+	private void checkIfStudentsInClass(LinkedList<String> students, LinkedList<Integer> studentIds) {
 		for (String studentName : students)
 			assertTrue(studentIds.contains(NumberReference.findStudentNumberByName(studentName)));
 	}
 
 	
-	private void checkIfStudentsNotInClass(LinkedList<String> students, Classroom classroom) {
-		LinkedList<Integer> studentIds = classroom.getStudentIds();
+	private void checkIfStudentsNotInClass(LinkedList<String> students, LinkedList<Integer> studentIds) {
 		for (String studentName : students)
 			assertFalse(studentIds.contains(NumberReference.findStudentNumberByName(studentName)));
 	}
