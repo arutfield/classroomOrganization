@@ -19,7 +19,6 @@ import exceptions.SearchingException;
 
 public class ParserTest {
 	private static final LinkedList<String> emptyStringList = new LinkedList<String>();
-	private static final LinkedList<Integer> emptyIntegerList = new LinkedList<Integer>();
 
 	@Test
 	public void TestParserTeachers() throws IOException, ClassSetupException, SearchingException {
@@ -97,6 +96,7 @@ public class ParserTest {
 		LinkedList<String> nsList = new LinkedList<String>(Arrays.asList("Ms N", "Ms S"));
 		LinkedList<String> lsList = new LinkedList<String>(Arrays.asList("Ms L", "Ms S"));
 		LinkedList<String> nslList = new LinkedList<String>(Arrays.asList("Ms N", "Ms S", "Ms L"));
+		LinkedList<String> nlList = new LinkedList<String>(Arrays.asList("Ms N", "Ms L"));
 
 		SheetDissector.ParseSheet("src\\test\\resources\\BigClass.xlsx");
 		
@@ -120,8 +120,53 @@ public class ParserTest {
 		checkStudentCharacteristics("Eight", false, sList, emptyStringList, emptyStringList);
 		checkStudentCharacteristics("Nine", false, nList, new LinkedList<String>(Arrays.asList("Forty", "Fifty")), emptyStringList);
 		checkStudentCharacteristics("Ten", true, nslList, emptyStringList, emptyStringList);
-
 		
+		checkStudentCharacteristics("Eleven", true, nslList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Twelve", true, nlList, emptyStringList, new LinkedList<String>(Arrays.asList("Fourteen")));
+		checkStudentCharacteristics("Thirteen", false, nlList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Fourteen", false, sList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Fifteen", true, nslList, new LinkedList<String>(Arrays.asList("Ten")), emptyStringList);
+		checkStudentCharacteristics("Sixteen", true, nslList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Seventeen", false, lList, emptyStringList, new LinkedList<String>(Arrays.asList("Fifty")));
+		checkStudentCharacteristics("Eighteen", false, nslList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Nineteen", true, nslList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Twenty", true, sList, emptyStringList, emptyStringList);
+
+		checkStudentCharacteristics("Twenty-one", false, nList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Twenty-two", false, nslList, emptyStringList, new LinkedList<String>(Arrays.asList("Nineteen")));
+		checkStudentCharacteristics("Twenty-three", false, nslList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Twenty-four", false, sList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Twenty-five", false, nslList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Twenty-six", false, nList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Twenty-seven", true, nslList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Twenty-eight", false, nslList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Twenty-nine", true, sList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Thirty", false, nslList, emptyStringList, emptyStringList);
+
+		checkStudentCharacteristics("Thirty-one", false, nslList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Thirty-two", false, nslList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Thirty-three", true, nslList, new LinkedList<String>(Arrays.asList("One")), emptyStringList);
+		checkStudentCharacteristics("Thirty-four", false, sList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Thirty-five", false, nslList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Thirty-six", false, nList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Thirty-seven", false, nList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Thirty-eight", true, sList, new LinkedList<String>(Arrays.asList("Thirty")), emptyStringList);
+		checkStudentCharacteristics("Thirty-nine", false, sList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Forty", false, nslList, emptyStringList, emptyStringList);
+
+		checkStudentCharacteristics("Forty-one", true, sList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Forty-two", false, lsList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Forty-three", false, nList, emptyStringList, new LinkedList<String>(Arrays.asList("Forty-two")));
+		checkStudentCharacteristics("Forty-four", true, nList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Forty-five", false, nslList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Forty-six", false, nList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Forty-seven", true, nslList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Forty-eight", false, nslList, new LinkedList<String>(Arrays.asList("Forty")), emptyStringList);
+		checkStudentCharacteristics("Forty-nine", false, nslList, emptyStringList, emptyStringList);
+		checkStudentCharacteristics("Fifty", true, nslList, emptyStringList, new LinkedList<String>(Arrays.asList("Eight", "Five")));
+
+		checkStudentCharacteristics("Fifty-one", false, nList, emptyStringList, emptyStringList);
+
 	}
 	
 	private void checkStudentCharacteristics(String name, boolean isFemale, LinkedList<String> allowedTeachers,
@@ -129,32 +174,12 @@ public class ParserTest {
 					throws SearchingException {
 		Student student = SheetDissector.getStudentById(NumberReference.findStudentNumberByName(name));
 		assertEquals(isFemale, student.IsFemale());
-		compareStringLists(allowedTeachers, student.getAllowedTeachers());
-		compareIntegerLists(convertStringStudentsToNumber(requiredStudents), student.getRequiredStudents());
-		compareIntegerLists(convertStringStudentsToNumber(forbiddenStudents), student.getForbiddenStudents());
+		CommonTestFunctions.compareStringLists(allowedTeachers, student.getAllowedTeachers());
+		CommonTestFunctions.compareIntegerLists(CommonTestFunctions.convertStringStudentsToNumber(requiredStudents), student.getRequiredStudents());
+		CommonTestFunctions.compareIntegerLists(CommonTestFunctions.convertStringStudentsToNumber(forbiddenStudents), student.getForbiddenStudents());
 
 	}
-	
-	private LinkedList<Integer> convertStringStudentsToNumber(LinkedList<String> studentList) throws SearchingException{
-		LinkedList<Integer> studentsIntegerList = new LinkedList<Integer>();
-		for (String studentName : studentList)
-			studentsIntegerList.add(NumberReference.findStudentNumberByName(studentName));
-		return studentsIntegerList;
-	}
-	
-	private void compareStringLists(LinkedList<String> actual, LinkedList<String> calculated) {
-		assertEquals(actual.size(), calculated.size());
-		for (String string : actual)
-			assertTrue(calculated.contains(string));
-	}
-
-	private void compareIntegerLists(LinkedList<Integer> actual, LinkedList<Integer> calculated) {
-		assertEquals(actual.size(), calculated.size());
-		for (Integer actualInt : actual)
-			assertTrue(calculated.contains(actualInt));
-	}
-
-	
+		
 	private LinkedList<String> getAllTeacherNames(){
 		LinkedList<String> names = new LinkedList<String>();
 		for (Classroom clr: SheetDissector.getClasses())

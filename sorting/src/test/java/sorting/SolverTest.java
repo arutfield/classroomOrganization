@@ -25,8 +25,8 @@ public class SolverTest {
 		Classroom[] result = ClassroomSorter.solveClassrooms();
 		
 		assertEquals(2, result.length);
-		compareIntegerLists(result[0].getStudentIds(), convertStringStudentsToNumber(new LinkedList<String>(Arrays.asList("E", "F", "B"))));
-		compareIntegerLists(result[1].getStudentIds(), convertStringStudentsToNumber(new LinkedList<String>(Arrays.asList("A", "C", "D"))));
+		CommonTestFunctions.compareIntegerLists(result[0].getStudentIds(), CommonTestFunctions.convertStringStudentsToNumber(new LinkedList<String>(Arrays.asList("E", "F", "B"))));
+		CommonTestFunctions.compareIntegerLists(result[1].getStudentIds(), CommonTestFunctions.convertStringStudentsToNumber(new LinkedList<String>(Arrays.asList("A", "C", "D"))));
 		assertEquals("Miss One", result[0].getTeacherName());
 		assertEquals("Mr Two", result[1].getTeacherName());
 	}
@@ -112,22 +112,4 @@ public class SolverTest {
 		assertEquals(3, result.length);
 	}
 	
-	private LinkedList<Integer> convertStringStudentsToNumber(LinkedList<String> studentList) throws SearchingException{
-		LinkedList<Integer> studentsIntegerList = new LinkedList<Integer>();
-		for (String studentName : studentList)
-			studentsIntegerList.add(NumberReference.findStudentNumberByName(studentName));
-		return studentsIntegerList;
-	}
-	private void compareStringLists(LinkedList<String> actual, LinkedList<String> calculated) {
-		assertEquals(actual.size(), calculated.size());
-		for (String string : actual)
-			assertTrue(calculated.contains(string));
-	}
-
-	private void compareIntegerLists(LinkedList<Integer> actual, LinkedList<Integer> calculated) {
-		assertEquals(actual.size(), calculated.size());
-		for (Integer actualInt : actual)
-			assertTrue(calculated.contains(actualInt));
-	}
-
 }
