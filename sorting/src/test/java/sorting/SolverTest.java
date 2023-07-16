@@ -29,8 +29,8 @@ public class SolverTest {
 				.convertStringStudentsToNumber(new LinkedList<String>(Arrays.asList("E", "F", "B"))));
 		CommonTestFunctions.compareIntegerLists(result[1].getStudentIds(), CommonTestFunctions
 				.convertStringStudentsToNumber(new LinkedList<String>(Arrays.asList("A", "C", "D"))));
-		assertEquals("Miss One", result[0].getTeacherName());
-		assertEquals("Mr Two", result[1].getTeacherName());
+		assertEquals("Miss One", NumberReference.findTeacherNameByNumber(result[0].getTeacherId()));
+		assertEquals("Mr Two", NumberReference.findTeacherNameByNumber(result[1].getTeacherId()));
 	}
 
 	@Test
@@ -44,12 +44,12 @@ public class SolverTest {
 			assertEquals(5, studentIds.size());
 			totalFemaleStudents += classroom.getTotalFemaleStudents();
 			assertTrue(classroom.getTotalFemaleStudents() == 3 || classroom.getTotalFemaleStudents() == 2);
-			if (classroom.getTeacherName().equals("Mr A.")) {
+			if (classroom.getTeacherId() == NumberReference.findTeacherNumberByName("Mr A.")) {
 				checkIfStudentsInClass(new LinkedList<String>(Arrays.asList("Three", "Two", "Fourteen")), studentIds);
 				checkIfStudentsNotInClass(new LinkedList<String>(Arrays.asList("Four", "One")), studentIds);
-			} else if (classroom.getTeacherName().equals("Ms B.")) {
+			} else if (classroom.getTeacherId() == NumberReference.findTeacherNumberByName("Ms B.")) {
 
-			} else if (classroom.getTeacherName().equals("Mrs C.")) {
+			} else if (classroom.getTeacherId() == NumberReference.findTeacherNumberByName("Mrs C.")) {
 				checkIfStudentsInClass(new LinkedList<String>(Arrays.asList("Ten", "Eleven", "Eight")), studentIds);
 			}
 			hasNoEnemy(studentIds, "Two", "One");
@@ -72,12 +72,12 @@ public class SolverTest {
 			assertTrue(studentIds.size() == 5 || studentIds.size() == 6);
 			totalFemaleStudents += classroom.getTotalFemaleStudents();
 			assertTrue(classroom.getTotalFemaleStudents() == 3 || classroom.getTotalFemaleStudents() == 2);
-			if (classroom.getTeacherName().equals("Mr A.")) {
+			if (classroom.getTeacherId().equals("Mr A.")) {
 				checkIfStudentsInClass(new LinkedList<String>(Arrays.asList("Three", "Two", "Fourteen")), studentIds);
 				checkIfStudentsNotInClass(new LinkedList<String>(Arrays.asList("Four", "One")), studentIds);
-			} else if (classroom.getTeacherName().equals("Ms B.")) {
+			} else if (classroom.getTeacherId().equals("Ms B.")) {
 				checkIfStudentsNotInClass(new LinkedList<String>(Arrays.asList("Sixteen")), studentIds);
-			} else if (classroom.getTeacherName().equals("Mrs C.")) {
+			} else if (classroom.getTeacherId().equals("Mrs C.")) {
 				checkIfStudentsInClass(new LinkedList<String>(Arrays.asList("Ten", "Eleven", "Eight")), studentIds);
 			}
 			hasNoEnemy(studentIds, "Two", "One");
@@ -100,7 +100,7 @@ public class SolverTest {
 			assertTrue(studentIds.size() == 17);
 			totalFemaleStudents += classroom.getTotalFemaleStudents();
 			assertTrue(classroom.getTotalFemaleStudents() == 6 || classroom.getTotalFemaleStudents() == 7);
-			if (classroom.getTeacherName().equals("Ms N")) {
+			if (classroom.getTeacherId() == NumberReference.findTeacherNumberByName("Ms N")) {
 				checkIfStudentsInClass(
 						new LinkedList<String>(Arrays.asList("One", "Three", "Nine", "Twenty-one", "Twenty-six",
 								"Thirty-six", "Thirty-seven", "Forty-three", "Forty-four", "Forty-six", "Fifty-one")),
@@ -109,13 +109,13 @@ public class SolverTest {
 				// based on requests
 				checkIfStudentsInClass(new LinkedList<String>(Arrays.asList("Forty", "Fifty")), studentIds);
 
-			} else if (classroom.getTeacherName().equals("Ms S")) {
+			} else if (classroom.getTeacherId() == NumberReference.findTeacherNumberByName("Ms S")) {
 				checkIfStudentsInClass(new LinkedList<String>(Arrays.asList("Two", "Six", "Eight", "Fourteen", "Twenty",
 						"Twenty-four", "Twenty-nine", "Thirty-four", "Thirty-eight", "Thirty-nine", "Forty-one")),
 						studentIds);
 				checkIfStudentsNotInClass(new LinkedList<String>(Arrays.asList("Twelve", "Thirteen")), studentIds);
 				checkIfStudentsInClass(new LinkedList<String>(Arrays.asList("Thirty")), studentIds);
-			} else if (classroom.getTeacherName().equals("Ms L")) {
+			} else if (classroom.getTeacherId() == NumberReference.findTeacherNumberByName("Ms L")) {
 				checkIfStudentsInClass(new LinkedList<String>(Arrays.asList("Five", "Seventeen")), studentIds);
 				checkIfStudentsNotInClass(new LinkedList<String>(Arrays.asList("Twenty-nine", "Fifty-one")),
 						studentIds);

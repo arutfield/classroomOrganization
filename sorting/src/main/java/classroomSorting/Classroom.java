@@ -6,14 +6,14 @@ import exceptions.SearchingException;
 
 public class Classroom {
 
-	private final String teacherName;
+	private final int teacherId;
 	private final LinkedList<Integer> studentIds = new LinkedList<Integer>();
 	private boolean isEll;
 	private boolean isIEP;
 	private int totalFemaleStudents = 0;
 
-	public Classroom(String teacher) {
-		this.teacherName = teacher;
+	public Classroom(Integer teacherId) {
+		this.teacherId = teacherId;
 	}
 
 	public void enableEll() {
@@ -24,8 +24,8 @@ public class Classroom {
 		isIEP = true;
 	}
 
-	public String getTeacherName() {
-		return teacherName;
+	public Integer getTeacherId() {
+		return teacherId;
 	}
 
 	public boolean IsEll() {
@@ -58,7 +58,7 @@ public class Classroom {
 
 	public String toString() {
 		StringBuilder stringBuilder = new StringBuilder("Teacher: ");
-		stringBuilder.append(teacherName);
+		stringBuilder.append(NumberReference.findTeacherNameByNumber(teacherId));
 		stringBuilder.append("\n  students:\n");
 		for (Integer studentId : studentIds) {
 			try {

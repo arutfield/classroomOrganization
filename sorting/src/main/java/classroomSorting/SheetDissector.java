@@ -37,7 +37,7 @@ public class SheetDissector {
 	public static void ParseSheet(String file) throws IOException, ClassSetupException, SearchingException {
 		LinkedList<Classroom> classesList = new LinkedList<Classroom>();
 		LinkedList<Student> studentsList = new LinkedList<Student>();
-		LinkedList<String> teacherNames = new LinkedList<String>();
+		LinkedList<Integer> teacherIds = new LinkedList<Integer>();
 		FileInputStream fis = new FileInputStream(new File(file));
 		XSSFWorkbook workbook = new XSSFWorkbook(fis);
 
@@ -71,8 +71,8 @@ public class SheetDissector {
 					}
 				}
 				if (isInTeacherSection) {
-					Classroom newClassroom = new Classroom(cellValue);
-					teacherNames.add(cellValue);
+					Classroom newClassroom = new Classroom(NumberReference.addTeacher(cellValue));
+					teacherIds.add(NumberReference.addTeacher(cellValue));
 					for (int i = 1; i < row.getLastCellNum(); i++) {
 						Cell subCell = row.getCell(i);
 						if (subCell.getStringCellValue().toLowerCase().equals("ell"))
@@ -83,7 +83,7 @@ public class SheetDissector {
 					classesList.add(newClassroom);
 				}
 				if (isInStudentSection) {
-					studentsList.add(createStudent(row, teacherNames, classesList, studentCharacteristicsList));
+					studentsList.add(createStudent(row, teacherIds, classesList, studentCharacteristicsList));
 				}
 				break;
 			default:
@@ -102,13 +102,13 @@ public class SheetDissector {
 
 	}
 
-	private static Student createStudent(Row row, LinkedList<String> teacherNames, LinkedList<Classroom> classes,
+	private static Student createStudent(Row row, LinkedList<Integer> teacherIds, LinkedList<Classroom> classes,
 			LinkedList<String> studentCharacteristicsList) throws ClassSetupException, SearchingException {
 		Student newStudent = null;
 		for (int i = 0; i < row.getLastCellNum(); i++) {
 			if (i == 0) {
 				Integer newStudentId = NumberReference.addStudent(row.getCell(i).getStringCellValue());
-				newStudent = new Student(newStudentId, teacherNames);
+				newStudent = new Student(newStudentId, teacherIds);
 				continue;
 			}
 			Cell subCell = row.getCell(i);
@@ -119,13 +119,13 @@ public class SheetDissector {
 				if (category.equals("is female"))
 					newStudent.setIsFemale(!subCell.getStringCellValue().equals("n"));
 				else if (category.equals("must have teacher")) {
-					checkTeacherIsInList(subCell.getStringCellValue(), classes);
-					newStudent.setOnlyAllowedTeacher(subCell.getStringCellValue());
+					checkTeacherIsInList(NumberReference.findTeacherNumberByName(subCell.getStringCellValue()), classes);
+					newStudent.setOnlyAllowedTeacher(NumberReference.findTeacherNumberByName(subCell.getStringCellValue()));
 				} else if (category.equals("can't have teacher")) {
 					String[] teachersNotAllowed = subCell.getStringCellValue().split(",");
 					for (String teacherInList : teachersNotAllowed) {
-						checkTeacherIsInList(teacherInList, classes);
-						newStudent.addForbiddenTeacher(teacherInList);
+						checkTeacherIsInList(NumberReference.findTeacherNumberByName(teacherInList), classes);
+						newStudent.addForbiddenTeacher(NumberReference.findTeacherNumberByName(teacherInList));
 					}
 				} else if (category.equals("must have student")) {
 					String[] studentsRequired = subCell.getStringCellValue().split(",");
@@ -142,12 +142,12 @@ public class SheetDissector {
 							if (specialCategory.equals("ELL")) {
 								for (Classroom currentClass : classes) {
 									if (!currentClass.IsEll())
-										newStudent.addForbiddenTeacher(currentClass.getTeacherName());
+										newStudent.addForbiddenTeacher(currentClass.getTeacherId());
 								}
 							} else if (specialCategory.equals("IEP")) {
 								for (Classroom currentClass : classes) {
 									if (!currentClass.IsIEP())
-										newStudent.addForbiddenTeacher(currentClass.getTeacherName());
+										newStudent.addForbiddenTeacher(currentClass.getTeacherId());
 								}
 							}
 						}
@@ -161,22 +161,22 @@ public class SheetDissector {
 		return newStudent;
 	}
 
-	private static boolean checkTeacherIsInList(String name, LinkedList<Classroom> classes) throws ClassSetupException {
+	private static boolean checkTeacherIsInList(Integer id, LinkedList<Classroom> classes) throws ClassSetupException {
 		for (Classroom classroom : classes) {
-			if (classroom.getTeacherName().equals(name)) {
+			if (classroom.getTeacherId() == id) {
 				return true;
 			}
 		}
-		throw new ClassSetupException("Unknown teacher: " + name);
+		throw new ClassSetupException("Unknown teacher: " + id);
 
 	}
 
-	public static Classroom getClassroomByName(String teacher) throws SearchingException {
+	public static Classroom getClassroomById(Integer teacherId) throws SearchingException {
 		for (Classroom cl : SheetDissector.getClasses()) {
-			if (cl.getTeacherName().equals(teacher))
+			if (cl.getTeacherId() == teacherId)
 				return cl;
 		}
-		throw new SearchingException("No class with name " + teacher);
+		throw new SearchingException("No class with id " + teacherId);
 	}
 
 	public static Student getStudentById(Integer id) throws SearchingException {

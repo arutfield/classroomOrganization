@@ -26,12 +26,12 @@ public class ParserTest {
 
 		assertEquals(3, SheetDissector.getClasses().length);
 		assertEquals(15, SheetDissector.getStudents().length);
-		assertTrue(SheetDissector.getClassroomByName("Mr A.").IsEll());
-		assertFalse(SheetDissector.getClassroomByName("Mr A.").IsIEP());
-		assertFalse(SheetDissector.getClassroomByName("Ms B.").IsEll());
-		assertFalse(SheetDissector.getClassroomByName("Ms B.").IsIEP());
-		assertFalse(SheetDissector.getClassroomByName("Mrs C.").IsEll());
-		assertTrue(SheetDissector.getClassroomByName("Mrs C.").IsIEP());
+		assertTrue(SheetDissector.getClassroomById(NumberReference.findTeacherNumberByName("Mr A.")).IsEll());
+		assertFalse(SheetDissector.getClassroomById(NumberReference.findTeacherNumberByName("Mr A.")).IsIEP());
+		assertFalse(SheetDissector.getClassroomById(NumberReference.findTeacherNumberByName("Ms B.")).IsEll());
+		assertFalse(SheetDissector.getClassroomById(NumberReference.findTeacherNumberByName("Ms B.")).IsIEP());
+		assertFalse(SheetDissector.getClassroomById(NumberReference.findTeacherNumberByName("Mrs C.")).IsEll());
+		assertTrue(SheetDissector.getClassroomById(NumberReference.findTeacherNumberByName("Mrs C.")).IsIEP());
 
 	}
 
@@ -74,10 +74,10 @@ public class ParserTest {
 		assertEquals(2, SheetDissector.getClasses().length);
 		assertEquals(6, SheetDissector.getStudents().length);
 
-		assertTrue(SheetDissector.getClassroomByName("Miss One").IsEll());
-		assertFalse(SheetDissector.getClassroomByName("Miss One").IsIEP());
-		assertFalse(SheetDissector.getClassroomByName("Mr Two").IsEll());
-		assertTrue(SheetDissector.getClassroomByName("Mr Two").IsIEP());
+		assertTrue(SheetDissector.getClassroomById(NumberReference.findTeacherNumberByName("Miss One")).IsEll());
+		assertFalse(SheetDissector.getClassroomById(NumberReference.findTeacherNumberByName("Miss One")).IsIEP());
+		assertFalse(SheetDissector.getClassroomById(NumberReference.findTeacherNumberByName("Mr Two")).IsEll());
+		assertTrue(SheetDissector.getClassroomById(NumberReference.findTeacherNumberByName("Mr Two")).IsIEP());
 
 		checkStudentCharacteristics("A", true, getAllTeacherNames(), emptyStringList, emptyStringList);
 		checkStudentCharacteristics("B", true, new LinkedList<String>(Arrays.asList("Miss One")), emptyStringList,
@@ -107,12 +107,12 @@ public class ParserTest {
 		assertEquals(3, SheetDissector.getClasses().length);
 		assertEquals(51, SheetDissector.getStudents().length);
 
-		assertTrue(SheetDissector.getClassroomByName("Ms N").IsIEP());
-		assertFalse(SheetDissector.getClassroomByName("Ms S").IsIEP());
-		assertFalse(SheetDissector.getClassroomByName("Ms N").IsEll());
-		assertTrue(SheetDissector.getClassroomByName("Ms S").IsEll());
-		assertFalse(SheetDissector.getClassroomByName("Ms L").IsIEP());
-		assertFalse(SheetDissector.getClassroomByName("Ms L").IsEll());
+		assertTrue(SheetDissector.getClassroomById(NumberReference.findTeacherNumberByName("Ms N")).IsIEP());
+		assertFalse(SheetDissector.getClassroomById(NumberReference.findTeacherNumberByName("Ms S")).IsIEP());
+		assertFalse(SheetDissector.getClassroomById(NumberReference.findTeacherNumberByName("Ms N")).IsEll());
+		assertTrue(SheetDissector.getClassroomById(NumberReference.findTeacherNumberByName("Ms S")).IsEll());
+		assertFalse(SheetDissector.getClassroomById(NumberReference.findTeacherNumberByName("Ms L")).IsIEP());
+		assertFalse(SheetDissector.getClassroomById(NumberReference.findTeacherNumberByName("Ms L")).IsEll());
 
 		checkStudentCharacteristics("One", false, nList, emptyStringList, emptyStringList);
 		checkStudentCharacteristics("Two", true, sList, emptyStringList,
@@ -188,7 +188,7 @@ public class ParserTest {
 			LinkedList<String> requiredStudents, LinkedList<String> forbiddenStudents) throws SearchingException {
 		Student student = SheetDissector.getStudentById(NumberReference.findStudentNumberByName(name));
 		assertEquals(isFemale, student.IsFemale());
-		CommonTestFunctions.compareStringLists(allowedTeachers, student.getAllowedTeachers());
+		CommonTestFunctions.compareTeacherLists(allowedTeachers, student.getAllowedTeachers());
 		CommonTestFunctions.compareIntegerLists(CommonTestFunctions.convertStringStudentsToNumber(requiredStudents),
 				student.getRequiredStudents());
 		CommonTestFunctions.compareIntegerLists(CommonTestFunctions.convertStringStudentsToNumber(forbiddenStudents),
@@ -199,7 +199,7 @@ public class ParserTest {
 	private LinkedList<String> getAllTeacherNames() {
 		LinkedList<String> names = new LinkedList<String>();
 		for (Classroom clr : SheetDissector.getClasses())
-			names.add(clr.getTeacherName());
+			names.add(NumberReference.findTeacherNameByNumber(clr.getTeacherId()));
 		return names;
 	}
 }

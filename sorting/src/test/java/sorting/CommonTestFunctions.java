@@ -15,10 +15,11 @@ public class CommonTestFunctions {
 			studentsIntegerList.add(NumberReference.findStudentNumberByName(studentName));
 		return studentsIntegerList;
 	}
-	public static void compareStringLists(LinkedList<String> actual, LinkedList<String> calculated) {
+
+	public static void compareTeacherLists(LinkedList<String> actual, LinkedList<Integer> calculated) throws SearchingException {
 		assertEquals(actual.size(), calculated.size());
 		for (String string : actual)
-			assertTrue(calculated.contains(string));
+			assertTrue(calculated.contains(NumberReference.findTeacherNumberByName(string)));
 	}
 
 	public static void compareIntegerLists(LinkedList<Integer> actual, LinkedList<Integer> calculated) {

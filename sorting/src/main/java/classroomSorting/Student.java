@@ -6,16 +6,16 @@ import exceptions.SearchingException;
 
 public class Student {
 
-	private final LinkedList<String> allowedTeachers;
+	private final LinkedList<Integer> allowedTeacherIds;
 	private final LinkedList<Integer> requiredStudents = new LinkedList<Integer>();
 	private final LinkedList<Integer> forbiddenStudents = new LinkedList<Integer>();
 	private final Integer id;
 	private boolean isFemale;
 	
 	
-	public Student(Integer id, LinkedList<String> teachers) {
+	public Student(Integer id, LinkedList<Integer> teacherIds) {
 		this.id = id;
-		allowedTeachers = (LinkedList<String>) teachers.clone();
+		allowedTeacherIds = (LinkedList<Integer>) teacherIds.clone();
 	}
 
 	public Integer getId() {
@@ -26,14 +26,14 @@ public class Student {
 		isFemale = female;
 	}
 
-	public void setOnlyAllowedTeacher(String onlyAllowedTeacher) {
-		allowedTeachers.clear();
-		allowedTeachers.add(onlyAllowedTeacher);
+	public void setOnlyAllowedTeacher(Integer onlyAllowedTeacherId) {
+		allowedTeacherIds.clear();
+		allowedTeacherIds.add(onlyAllowedTeacherId);
 		
 	}
 
-	public void addForbiddenTeacher(String teacherInList) {
-		allowedTeachers.remove(teacherInList);
+	public void addForbiddenTeacher(Integer teacherIdInList) {
+		allowedTeacherIds.remove(teacherIdInList);
 	}
 
 	public void addRequiredClassmate(String studentInList) throws SearchingException {
@@ -48,8 +48,8 @@ public class Student {
 		return isFemale;
 	}
 
-	public LinkedList<String> getAllowedTeachers() {
-		return allowedTeachers;
+	public LinkedList<Integer> getAllowedTeachers() {
+		return allowedTeacherIds;
 	}
 
 	public LinkedList<Integer> getRequiredStudents() {
@@ -66,9 +66,9 @@ public class Student {
 		stringBuilder.append(", ");
 		stringBuilder.append(isFemale ? "female" : "not female");
 		stringBuilder.append(", allowed in ");
-		for (int i=0; i<allowedTeachers.size(); i++) {
-			stringBuilder.append(allowedTeachers.get(i));
-			if (i < allowedTeachers.size() - 1)
+		for (int i=0; i<allowedTeacherIds.size(); i++) {
+			stringBuilder.append(allowedTeacherIds.get(i));
+			if (i < allowedTeacherIds.size() - 1)
 				stringBuilder.append(", ");
 			
 		}

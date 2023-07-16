@@ -40,13 +40,13 @@ public class ClassroomSorter {
 			return actualInitialClasses;
 		Student student = actualStudents.pop();
 		// get students who were requested by this student
-		String teacherWithFriend = null;
+		Integer teacherWithFriend = null;
 		for (Integer friendId : student.getRequiredStudents()) {
 			for (Classroom classToCheck : initialClasses) {
 				if (classToCheck.getStudentIds().contains(friendId)) {
 					if (teacherWithFriend == null)
-						teacherWithFriend = classToCheck.getTeacherName();
-					else if (!teacherWithFriend.equals(classToCheck.getTeacherName())) {
+						teacherWithFriend = classToCheck.getTeacherId();
+					else if (teacherWithFriend != classToCheck.getTeacherId()) {
 						// multiple requested students with different teachers won't work
 						return null;
 					}
@@ -59,8 +59,8 @@ public class ClassroomSorter {
 			for (Integer friendId : classroomToCheck.getStudentIds()) {
 				if (SheetDissector.getStudentById(friendId).getRequiredStudents().contains(student.getId())) {
 					if (teacherWithFriend == null) {
-						teacherWithFriend = classroomToCheck.getTeacherName();
-					} else if (!teacherWithFriend.equals(classroomToCheck.getTeacherName())) {
+						teacherWithFriend = classroomToCheck.getTeacherId();
+					} else if (teacherWithFriend != classroomToCheck.getTeacherId()) {
 						// student requests don't line up
 						return null;
 					}
@@ -68,20 +68,20 @@ public class ClassroomSorter {
 			}
 		}
 
-		LinkedList<String> allowedTeachers = student.getAllowedTeachers();
+		LinkedList<Integer> allowedTeacherIds = student.getAllowedTeachers();
 		if (teacherWithFriend != null) {
-			if (!allowedTeachers.contains(teacherWithFriend))
+			if (!allowedTeacherIds.contains(teacherWithFriend))
 				return null;
 			else {
-				allowedTeachers.clear();
-				allowedTeachers.add(teacherWithFriend);
+				allowedTeacherIds.clear();
+				allowedTeacherIds.add(teacherWithFriend);
 			}
 		}
 		int classesAtMaximum = classesAtMaximum(actualInitialClasses);
-		for (String teacherName : allowedTeachers) {
-			if (studentIsAllowedInClass(student.getId(), teacherName, actualInitialClasses)) {
+		for (Integer teacherId : allowedTeacherIds) {
+			if (studentIsAllowedInClass(student.getId(), teacherId, actualInitialClasses)) {
 				for (Classroom classroom : actualInitialClasses)
-					if (classroom.getTeacherName().equals(teacherName)) {
+					if (classroom.getTeacherId() == teacherId) {
 						if (classesAtMaximum == extraStudents
 								&& classroom.getStudentIds().size() == mostAllowedInClass - 1) {
 							break;
@@ -98,11 +98,11 @@ public class ClassroomSorter {
 		return null;
 	}
 
-	private static boolean studentIsAllowedInClass(Integer studentId, String teacherName, Classroom[] currentClasses)
+	private static boolean studentIsAllowedInClass(Integer studentId, Integer teacherId, Classroom[] currentClasses)
 			throws SearchingException {
 		Classroom currentClassroom = null;
 		for (Classroom classroom : currentClasses)
-			if (classroom.getTeacherName().equals(teacherName)) {
+			if (classroom.getTeacherId() == teacherId) {
 				currentClassroom = classroom;
 				break;
 			}

@@ -18,7 +18,6 @@ public class NumberReference {
 				return studentNumber;
 		}
 		return addStudent(name);
-		//throw new SearchingException("Unable to find " + name + " in list of students");
 	}
 
 	public static Integer addStudent(String studentName) {
@@ -29,5 +28,24 @@ public class NumberReference {
 		return id;
 	}
 
+	public static String findTeacherNameByNumber(int number) {
+		return teachers.get(number);
+	}
+	
+	public static Integer findTeacherNumberByName(String name) throws SearchingException{
+		for (Integer teacherNumber : teachers.keySet()) {
+			if (teachers.get(teacherNumber).equals(name))
+				return teacherNumber;
+		}
+		throw new SearchingException("Unable to find teacher " + name);
+	}
+
+	public static Integer addTeacher(String teacherName) throws SearchingException {
+		if (teachers.containsValue(teacherName))
+			return findTeacherNumberByName(teacherName);
+		int id = teachers.size();
+		teachers.put(id, teacherName);
+		return id;
+	}
 	
 }
