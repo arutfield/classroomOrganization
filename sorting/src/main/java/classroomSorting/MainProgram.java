@@ -59,7 +59,7 @@ public class MainProgram {
 			headerStyle.setFont(font);
 			
 			Cell headerCell = header.createCell(i);
-			headerCell.setCellValue(classrooms[i].getTeacherId());
+			headerCell.setCellValue(NumberReference.findTeacherNameByNumber(classrooms[i].getTeacherId()));
 			headerCell.setCellStyle(headerStyle);
 			for (int j=0; j<classrooms[i].getStudentIds().size(); j++) {
 				int r = j+1;
