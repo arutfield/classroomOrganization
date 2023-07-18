@@ -1,12 +1,13 @@
 package classroomSorting;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import exceptions.SearchingException;
 
 public class Student {
 
-	private final ArrayList<Integer> allowedTeacherIds;
+	private final ArrayList<Integer> allowedTeacherIds = new ArrayList<Integer>();
 	private final ArrayList<Integer> requiredStudents = new ArrayList<Integer>();
 	private final ArrayList<Integer> forbiddenStudents = new ArrayList<Integer>();
 	private final Integer id;
@@ -15,7 +16,8 @@ public class Student {
 	
 	public Student(Integer id, ArrayList<Integer> teacherIds) {
 		this.id = id;
-		allowedTeacherIds = (ArrayList<Integer>) teacherIds.clone();
+		for (int i=0; i<teacherIds.size(); i++) allowedTeacherIds.add(0);
+		Collections.copy(allowedTeacherIds, teacherIds);
 	}
 
 	public Integer getId() {
