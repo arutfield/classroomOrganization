@@ -1,6 +1,7 @@
 package classroomSorting;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.ArrayList;
 
 import exceptions.SearchingException;
@@ -35,7 +36,9 @@ public class ClassroomSorter {
 	private static Classroom[] attemptToPlaceStudent(ArrayList<Student> students, Classroom[] initialClasses)
 			throws SearchingException {
 		Classroom[] actualInitialClasses = initialClasses.clone();
-		ArrayList<Student> actualStudents = (ArrayList<Student>) students.clone();
+		ArrayList<Student> actualStudents = new ArrayList<Student>();
+		for (int i=0; i<students.size(); i++) actualStudents.add(null);
+		Collections.copy(actualStudents, students);
 		if (actualStudents.isEmpty())
 			return actualInitialClasses;
 		Student student = actualStudents.remove(0);
