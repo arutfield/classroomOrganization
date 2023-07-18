@@ -54,16 +54,24 @@ public class MainProgram {
 			Classroom[] classrooms = solutions.get(w);
 			XSSFSheet sheet = workbook.createSheet("Solution " + w);
 			sheet.createRow(0);
+
+			XSSFCellStyle headerStyle = workbook.createCellStyle();
+			XSSFFont font = ((XSSFWorkbook) workbook).createFont();
+			font.setFontName("Arial");
+			font.setFontHeightInPoints((short) 16);
+			font.setBold(true);
+			headerStyle.setFont(font);
+
+			
+			XSSFCellStyle studentHeaderStyle = workbook.createCellStyle();
+			XSSFFont studentFont = ((XSSFWorkbook) workbook).createFont();
+			studentFont.setFontName("Arial");
+			studentFont.setFontHeightInPoints((short) 12);
+			studentHeaderStyle.setFont(studentFont);
+			
 			for (int i=0; i<classrooms.length; i++) {
 				sheet.setColumnWidth(i, 6000);
 				XSSFRow header = sheet.getRow(0);
-				XSSFCellStyle headerStyle = workbook.createCellStyle();
-
-				XSSFFont font = ((XSSFWorkbook) workbook).createFont();
-				font.setFontName("Arial");
-				font.setFontHeightInPoints((short) 16);
-				font.setBold(true);
-				headerStyle.setFont(font);
 				
 				Cell headerCell = header.createCell(i);
 				headerCell.setCellValue(NumberReference.findTeacherNameByNumber(classrooms[i].getTeacherId()));
@@ -75,17 +83,10 @@ public class MainProgram {
 						studentHeader = sheet.createRow(r);
 					else
 						studentHeader = sheet.getRow(r);
-					XSSFCellStyle studentHeaderStyle = workbook.createCellStyle();
-
-					XSSFFont studentFont = ((XSSFWorkbook) workbook).createFont();
-					studentFont.setFontName("Arial");
-					studentFont.setFontHeightInPoints((short) 12);
-					studentHeaderStyle.setFont(studentFont);
 					
 					Cell studentHeaderCell = studentHeader.createCell(i);
 					studentHeaderCell.setCellValue(NumberReference.findStudentNameByNumber(classrooms[i].getStudentIds().get(j)));
 					studentHeaderCell.setCellStyle(studentHeaderStyle);
-
 				}
 				
 			}
