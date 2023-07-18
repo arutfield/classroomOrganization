@@ -1,6 +1,7 @@
 package classroomSorting;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import exceptions.SearchingException;
 
@@ -14,6 +15,15 @@ public class Classroom {
 
 	public Classroom(Integer teacherId) {
 		this.teacherId = teacherId;
+	}
+
+	public Classroom(Classroom classroom) {
+		this.teacherId = classroom.teacherId;
+		this.isEll = classroom.isEll;
+		this.isIEP = classroom.isIEP;
+		this.totalFemaleStudents = classroom.totalFemaleStudents;
+		for (int i=0; i<classroom.studentIds.size(); i++) this.studentIds.add(0);
+		Collections.copy(this.studentIds, classroom.studentIds);
 	}
 
 	public void enableEll() {
