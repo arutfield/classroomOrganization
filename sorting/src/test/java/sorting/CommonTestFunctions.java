@@ -3,26 +3,26 @@ package sorting;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import classroomSorting.NumberReference;
 import exceptions.SearchingException;
 
 public class CommonTestFunctions {
-	public static LinkedList<Integer> convertStringStudentsToNumber(LinkedList<String> studentList) throws SearchingException{
-		LinkedList<Integer> studentsIntegerList = new LinkedList<Integer>();
+	public static ArrayList<Integer> convertStringStudentsToNumber(ArrayList<String> studentList) throws SearchingException{
+		ArrayList<Integer> studentsIntegerList = new ArrayList<Integer>();
 		for (String studentName : studentList)
 			studentsIntegerList.add(NumberReference.findStudentNumberByName(studentName));
 		return studentsIntegerList;
 	}
 
-	public static void compareTeacherLists(LinkedList<String> actual, LinkedList<Integer> calculated) throws SearchingException {
+	public static void compareTeacherLists(ArrayList<String> actual, ArrayList<Integer> calculated) throws SearchingException {
 		assertEquals(actual.size(), calculated.size());
 		for (String string : actual)
 			assertTrue(calculated.contains(NumberReference.findTeacherNumberByName(string)));
 	}
 
-	public static void compareIntegerLists(LinkedList<Integer> actual, LinkedList<Integer> calculated) {
+	public static void compareIntegerLists(ArrayList<Integer> actual, ArrayList<Integer> calculated) {
 		assertEquals(actual.size(), calculated.size());
 		for (Integer actualInt : actual)
 			assertTrue(calculated.contains(actualInt));

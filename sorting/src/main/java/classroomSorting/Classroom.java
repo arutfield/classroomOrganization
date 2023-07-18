@@ -1,13 +1,13 @@
 package classroomSorting;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import exceptions.SearchingException;
 
 public class Classroom {
 
 	private final int teacherId;
-	private final LinkedList<Integer> studentIds = new LinkedList<Integer>();
+	private final ArrayList<Integer> studentIds = new ArrayList<Integer>();
 	private boolean isEll;
 	private boolean isIEP;
 	private int totalFemaleStudents = 0;
@@ -42,7 +42,7 @@ public class Classroom {
 			totalFemaleStudents++;
 	}
 
-	public LinkedList<Integer> getStudentIds() {
+	public ArrayList<Integer> getStudentIds() {
 		return studentIds;
 	}
 

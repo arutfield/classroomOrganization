@@ -1,21 +1,21 @@
 package classroomSorting;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import exceptions.SearchingException;
 
 public class Student {
 
-	private final LinkedList<Integer> allowedTeacherIds;
-	private final LinkedList<Integer> requiredStudents = new LinkedList<Integer>();
-	private final LinkedList<Integer> forbiddenStudents = new LinkedList<Integer>();
+	private final ArrayList<Integer> allowedTeacherIds;
+	private final ArrayList<Integer> requiredStudents = new ArrayList<Integer>();
+	private final ArrayList<Integer> forbiddenStudents = new ArrayList<Integer>();
 	private final Integer id;
 	private boolean isFemale;
 	
 	
-	public Student(Integer id, LinkedList<Integer> teacherIds) {
+	public Student(Integer id, ArrayList<Integer> teacherIds) {
 		this.id = id;
-		allowedTeacherIds = (LinkedList<Integer>) teacherIds.clone();
+		allowedTeacherIds = (ArrayList<Integer>) teacherIds.clone();
 	}
 
 	public Integer getId() {
@@ -48,15 +48,15 @@ public class Student {
 		return isFemale;
 	}
 
-	public LinkedList<Integer> getAllowedTeachers() {
+	public ArrayList<Integer> getAllowedTeachers() {
 		return allowedTeacherIds;
 	}
 
-	public LinkedList<Integer> getRequiredStudents() {
+	public ArrayList<Integer> getRequiredStudents() {
 		return requiredStudents;
 	}
 
-	public LinkedList<Integer> getForbiddenStudents() {
+	public ArrayList<Integer> getForbiddenStudents() {
 		return forbiddenStudents;
 	}
 	

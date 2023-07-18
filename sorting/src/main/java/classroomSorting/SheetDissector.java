@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -35,16 +35,16 @@ public class SheetDissector {
 	}
 
 	public static void ParseSheet(String file) throws IOException, ClassSetupException, SearchingException {
-		LinkedList<Classroom> classesList = new LinkedList<Classroom>();
-		LinkedList<Student> studentsList = new LinkedList<Student>();
-		LinkedList<Integer> teacherIds = new LinkedList<Integer>();
+		ArrayList<Classroom> classesList = new ArrayList<Classroom>();
+		ArrayList<Student> studentsList = new ArrayList<Student>();
+		ArrayList<Integer> teacherIds = new ArrayList<Integer>();
 		FileInputStream fis = new FileInputStream(new File(file));
 		XSSFWorkbook workbook = new XSSFWorkbook(fis);
 
 		XSSFSheet sheet = workbook.getSheetAt(0);
 		boolean isInTeacherSection = false;
 		boolean isInStudentSection = false;
-		LinkedList<String> studentCharacteristicsList = new LinkedList<String>();
+		ArrayList<String> studentCharacteristicsList = new ArrayList<String>();
 		for (Row row : sheet) {
 			if (row.getLastCellNum() == 0)
 				continue;
@@ -102,8 +102,8 @@ public class SheetDissector {
 
 	}
 
-	private static Student createStudent(Row row, LinkedList<Integer> teacherIds, LinkedList<Classroom> classes,
-			LinkedList<String> studentCharacteristicsList) throws ClassSetupException, SearchingException {
+	private static Student createStudent(Row row, ArrayList<Integer> teacherIds, ArrayList<Classroom> classes,
+			ArrayList<String> studentCharacteristicsList) throws ClassSetupException, SearchingException {
 		Student newStudent = null;
 		for (int i = 0; i < row.getLastCellNum(); i++) {
 			if (i == 0) {
@@ -161,7 +161,7 @@ public class SheetDissector {
 		return newStudent;
 	}
 
-	private static boolean checkTeacherIsInList(Integer id, LinkedList<Classroom> classes) throws ClassSetupException {
+	private static boolean checkTeacherIsInList(Integer id, ArrayList<Classroom> classes) throws ClassSetupException {
 		for (Classroom classroom : classes) {
 			if (classroom.getTeacherId() == id) {
 				return true;

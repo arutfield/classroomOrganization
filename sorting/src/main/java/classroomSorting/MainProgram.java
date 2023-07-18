@@ -3,7 +3,7 @@ package classroomSorting;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;

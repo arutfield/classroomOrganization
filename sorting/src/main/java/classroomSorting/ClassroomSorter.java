@@ -1,7 +1,7 @@
 package classroomSorting;
 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import exceptions.SearchingException;
 
@@ -28,17 +28,17 @@ public class ClassroomSorter {
 		mostNotFemaleStudentsAllowedPerClass = (double) (SheetDissector.getStudents().length
 				- SheetDissector.getTotalFemaleStudents()) / (double) emptyClasses.length
 				+ 1.0 / (double) emptyClasses.length;
-		return attemptToPlaceStudent(new LinkedList<Student>(Arrays.asList(students)), emptyClasses);
+		return attemptToPlaceStudent(new ArrayList<Student>(Arrays.asList(students)), emptyClasses);
 
 	}
 
-	private static Classroom[] attemptToPlaceStudent(LinkedList<Student> students, Classroom[] initialClasses)
+	private static Classroom[] attemptToPlaceStudent(ArrayList<Student> students, Classroom[] initialClasses)
 			throws SearchingException {
 		Classroom[] actualInitialClasses = initialClasses.clone();
-		LinkedList<Student> actualStudents = (LinkedList<Student>) students.clone();
+		ArrayList<Student> actualStudents = (ArrayList<Student>) students.clone();
 		if (actualStudents.isEmpty())
 			return actualInitialClasses;
-		Student student = actualStudents.pop();
+		Student student = actualStudents.remove(0);
 		// get students who were requested by this student
 		Integer teacherWithFriend = null;
 		for (Integer friendId : student.getRequiredStudents()) {
@@ -68,7 +68,7 @@ public class ClassroomSorter {
 			}
 		}
 
-		LinkedList<Integer> allowedTeacherIds = student.getAllowedTeachers();
+		ArrayList<Integer> allowedTeacherIds = student.getAllowedTeachers();
 		if (teacherWithFriend != null) {
 			if (!allowedTeacherIds.contains(teacherWithFriend))
 				return null;
