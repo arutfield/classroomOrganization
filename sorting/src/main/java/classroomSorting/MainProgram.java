@@ -52,7 +52,7 @@ public class MainProgram {
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		for (int w=0; w<solutions.size(); w++) {
 			Classroom[] classrooms = solutions.get(w);
-			XSSFSheet sheet = workbook.createSheet("Solution " + w);
+			XSSFSheet sheet = workbook.createSheet("Solution " + (w+1));
 			sheet.createRow(0);
 
 			XSSFCellStyle headerStyle = workbook.createCellStyle();
@@ -62,7 +62,6 @@ public class MainProgram {
 			font.setBold(true);
 			headerStyle.setFont(font);
 
-			
 			XSSFCellStyle studentHeaderStyle = workbook.createCellStyle();
 			XSSFFont studentFont = ((XSSFWorkbook) workbook).createFont();
 			studentFont.setFontName("Arial");
@@ -83,20 +82,16 @@ public class MainProgram {
 						studentHeader = sheet.createRow(r);
 					else
 						studentHeader = sheet.getRow(r);
-					
 					Cell studentHeaderCell = studentHeader.createCell(i);
 					studentHeaderCell.setCellValue(NumberReference.findStudentNameByNumber(classrooms[i].getStudentIds().get(j)));
 					studentHeaderCell.setCellStyle(studentHeaderStyle);
-				}
-				
+				}	
 			}
-			
 		}
 		
 		File currDir = new File(".");
 		String path = currDir.getAbsolutePath();
 		String fileLocation = path.substring(0, path.length() - 1) + fileName + "_solution.xlsx";
-
 		FileOutputStream outputStream = new FileOutputStream(fileLocation);
 		workbook.write(outputStream);
 		workbook.close();
