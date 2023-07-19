@@ -45,17 +45,17 @@ public class SolverTest {
 			totalFemaleStudents += classroom.getTotalFemaleStudents();
 			assertTrue(classroom.getTotalFemaleStudents() == 3 || classroom.getTotalFemaleStudents() == 2);
 			if (classroom.getTeacherId() == NumberReference.findTeacherNumberByName("Mr A.")) {
-				checkIfStudentsInClass(new ArrayList<String>(Arrays.asList("Three", "Two", "Fourteen")), studentIds);
-				checkIfStudentsNotInClass(new ArrayList<String>(Arrays.asList("Four", "One")), studentIds);
+				CommonTestFunctions.checkIfStudentsInClass(new ArrayList<String>(Arrays.asList("Three", "Two", "Fourteen")), studentIds);
+				CommonTestFunctions.checkIfStudentsNotInClass(new ArrayList<String>(Arrays.asList("Four", "One")), studentIds);
 			} else if (classroom.getTeacherId() == NumberReference.findTeacherNumberByName("Ms B.")) {
 
 			} else if (classroom.getTeacherId() == NumberReference.findTeacherNumberByName("Mrs C.")) {
-				checkIfStudentsInClass(new ArrayList<String>(Arrays.asList("Ten", "Eleven", "Eight")), studentIds);
+				CommonTestFunctions.checkIfStudentsInClass(new ArrayList<String>(Arrays.asList("Ten", "Eleven", "Eight")), studentIds);
 			}
-			hasNoEnemy(studentIds, "Two", "One");
-			hasNoEnemy(studentIds, "Four", "Eleven");
-			hasFriend(studentIds, "Six", "Eight");
-			hasFriend(studentIds, "Thirteen", "Eleven");
+			CommonTestFunctions.hasNoEnemy(studentIds, "Two", "One");
+			CommonTestFunctions.hasNoEnemy(studentIds, "Four", "Eleven");
+			CommonTestFunctions.hasFriend(studentIds, "Six", "Eight");
+			CommonTestFunctions.hasFriend(studentIds, "Thirteen", "Eleven");
 		}
 		assertEquals(7, totalFemaleStudents);
 
@@ -73,17 +73,17 @@ public class SolverTest {
 			totalFemaleStudents += classroom.getTotalFemaleStudents();
 			assertTrue(classroom.getTotalFemaleStudents() == 3 || classroom.getTotalFemaleStudents() == 2);
 			if (classroom.getTeacherId().equals("Mr A.")) {
-				checkIfStudentsInClass(new ArrayList<String>(Arrays.asList("Three", "Two", "Fourteen")), studentIds);
-				checkIfStudentsNotInClass(new ArrayList<String>(Arrays.asList("Four", "One")), studentIds);
+				CommonTestFunctions.checkIfStudentsInClass(new ArrayList<String>(Arrays.asList("Three", "Two", "Fourteen")), studentIds);
+				CommonTestFunctions.checkIfStudentsNotInClass(new ArrayList<String>(Arrays.asList("Four", "One")), studentIds);
 			} else if (classroom.getTeacherId().equals("Ms B.")) {
-				checkIfStudentsNotInClass(new ArrayList<String>(Arrays.asList("Sixteen")), studentIds);
+				CommonTestFunctions.checkIfStudentsNotInClass(new ArrayList<String>(Arrays.asList("Sixteen")), studentIds);
 			} else if (classroom.getTeacherId().equals("Mrs C.")) {
-				checkIfStudentsInClass(new ArrayList<String>(Arrays.asList("Ten", "Eleven", "Eight")), studentIds);
+				CommonTestFunctions.checkIfStudentsInClass(new ArrayList<String>(Arrays.asList("Ten", "Eleven", "Eight")), studentIds);
 			}
-			hasNoEnemy(studentIds, "Two", "One");
-			hasNoEnemy(studentIds, "Four", "Eleven");
-			hasFriend(studentIds, "Six", "Eight");
-			hasFriend(studentIds, "Thirteen", "Eleven");
+			CommonTestFunctions.hasNoEnemy(studentIds, "Two", "One");
+			CommonTestFunctions.hasNoEnemy(studentIds, "Four", "Eleven");
+			CommonTestFunctions.hasFriend(studentIds, "Six", "Eight");
+			CommonTestFunctions.hasFriend(studentIds, "Thirteen", "Eleven");
 		}
 		assertEquals(8, totalFemaleStudents);
 
@@ -101,57 +101,37 @@ public class SolverTest {
 			totalFemaleStudents += classroom.getTotalFemaleStudents();
 			assertTrue(classroom.getTotalFemaleStudents() == 6 || classroom.getTotalFemaleStudents() == 7);
 			if (classroom.getTeacherId() == NumberReference.findTeacherNumberByName("Ms N")) {
-				checkIfStudentsInClass(
+				CommonTestFunctions.checkIfStudentsInClass(
 						new ArrayList<String>(Arrays.asList("One", "Three", "Nine", "Twenty-one", "Twenty-six",
 								"Thirty-six", "Thirty-seven", "Forty-three", "Forty-four", "Forty-six", "Fifty-one")),
 						studentIds);
-				checkIfStudentsNotInClass(new ArrayList<String>(Arrays.asList("Four", "Forty-two")), studentIds);
+				CommonTestFunctions.checkIfStudentsNotInClass(new ArrayList<String>(Arrays.asList("Four", "Forty-two")), studentIds);
 				// based on requests
-				checkIfStudentsInClass(new ArrayList<String>(Arrays.asList("Forty", "Fifty")), studentIds);
+				CommonTestFunctions.checkIfStudentsInClass(new ArrayList<String>(Arrays.asList("Forty", "Fifty")), studentIds);
 
 			} else if (classroom.getTeacherId() == NumberReference.findTeacherNumberByName("Ms S")) {
-				checkIfStudentsInClass(new ArrayList<String>(Arrays.asList("Two", "Six", "Eight", "Fourteen", "Twenty",
+				CommonTestFunctions.checkIfStudentsInClass(new ArrayList<String>(Arrays.asList("Two", "Six", "Eight", "Fourteen", "Twenty",
 						"Twenty-four", "Twenty-nine", "Thirty-four", "Thirty-eight", "Thirty-nine", "Forty-one")),
 						studentIds);
-				checkIfStudentsNotInClass(new ArrayList<String>(Arrays.asList("Twelve", "Thirteen")), studentIds);
-				checkIfStudentsInClass(new ArrayList<String>(Arrays.asList("Thirty")), studentIds);
+				CommonTestFunctions.checkIfStudentsNotInClass(new ArrayList<String>(Arrays.asList("Twelve", "Thirteen")), studentIds);
+				CommonTestFunctions.checkIfStudentsInClass(new ArrayList<String>(Arrays.asList("Thirty")), studentIds);
 			} else if (classroom.getTeacherId() == NumberReference.findTeacherNumberByName("Ms L")) {
-				checkIfStudentsInClass(new ArrayList<String>(Arrays.asList("Five", "Seventeen")), studentIds);
-				checkIfStudentsNotInClass(new ArrayList<String>(Arrays.asList("Twenty-nine", "Fifty-one")),
+				CommonTestFunctions.checkIfStudentsInClass(new ArrayList<String>(Arrays.asList("Five", "Seventeen")), studentIds);
+				CommonTestFunctions.checkIfStudentsNotInClass(new ArrayList<String>(Arrays.asList("Twenty-nine", "Fifty-one")),
 						studentIds);
 			}
-			hasFriend(studentIds, "Fifteen", "Ten");
-			hasFriend(studentIds, "Thirty-three", "One");
-			hasFriend(studentIds, "Forty-eight", "Forty");
-			hasNoEnemy(studentIds, "Two", "Eighteen");
-			hasNoEnemy(studentIds, "Twelve", "Fourteen");
-			hasNoEnemy(studentIds, "Seventeen", "Fifty");
-			hasNoEnemy(studentIds, "Twenty-two", "Nineteen");
-			hasNoEnemy(studentIds, "Forty-three", "Forty-two");
-			hasNoEnemy(studentIds, "Fifty", "Eight");
-			hasNoEnemy(studentIds, "Fifty", "Five");
+			CommonTestFunctions.hasFriend(studentIds, "Fifteen", "Ten");
+			CommonTestFunctions.hasFriend(studentIds, "Thirty-three", "One");
+			CommonTestFunctions.hasFriend(studentIds, "Forty-eight", "Forty");
+			CommonTestFunctions.hasNoEnemy(studentIds, "Two", "Eighteen");
+			CommonTestFunctions.hasNoEnemy(studentIds, "Twelve", "Fourteen");
+			CommonTestFunctions.hasNoEnemy(studentIds, "Seventeen", "Fifty");
+			CommonTestFunctions.hasNoEnemy(studentIds, "Twenty-two", "Nineteen");
+			CommonTestFunctions.hasNoEnemy(studentIds, "Forty-three", "Forty-two");
+			CommonTestFunctions.hasNoEnemy(studentIds, "Fifty", "Eight");
+			CommonTestFunctions.hasNoEnemy(studentIds, "Fifty", "Five");
 
 		}
 		assertEquals(19, totalFemaleStudents);
-	}
-
-	private void hasFriend(ArrayList<Integer> studentIds, String currentStudentName, String friendName) {
-		if (studentIds.contains(NumberReference.findStudentNumberByName(currentStudentName)))
-			assertTrue(studentIds.contains(NumberReference.findStudentNumberByName(friendName)));
-	}
-
-	private void hasNoEnemy(ArrayList<Integer> studentIds, String currentStudentName, String friendName) {
-		if (studentIds.contains(NumberReference.findStudentNumberByName(currentStudentName)))
-			assertFalse(studentIds.contains(NumberReference.findStudentNumberByName(friendName)));
-	}
-
-	private void checkIfStudentsInClass(ArrayList<String> students, ArrayList<Integer> studentIds) {
-		for (String studentName : students)
-			assertTrue(studentIds.contains(NumberReference.findStudentNumberByName(studentName)));
-	}
-
-	private void checkIfStudentsNotInClass(ArrayList<String> students, ArrayList<Integer> studentIds) {
-		for (String studentName : students)
-			assertFalse(studentIds.contains(NumberReference.findStudentNumberByName(studentName)));
 	}
 }
