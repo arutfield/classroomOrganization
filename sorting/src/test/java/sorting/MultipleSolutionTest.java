@@ -38,7 +38,6 @@ public class MultipleSolutionTest {
 					CommonTestFunctions.checkIfStudentsNotInClass(new ArrayList<String>(Arrays.asList("Four", "Forty-two")), studentIds);
 					// based on requests
 					CommonTestFunctions.checkIfStudentsInClass(new ArrayList<String>(Arrays.asList("Forty", "Fifty")), studentIds);
-
 				} else if (classroom.getTeacherId() == NumberReference.findTeacherNumberByName("Ms S")) {
 					CommonTestFunctions.checkIfStudentsInClass(new ArrayList<String>(Arrays.asList("Two", "Six", "Eight", "Fourteen", "Twenty",
 							"Twenty-four", "Twenty-nine", "Thirty-four", "Thirty-eight", "Thirty-nine", "Forty-one")),
@@ -60,11 +59,55 @@ public class MultipleSolutionTest {
 				CommonTestFunctions.hasNoEnemy(studentIds, "Forty-three", "Forty-two");
 				CommonTestFunctions.hasNoEnemy(studentIds, "Fifty", "Eight");
 				CommonTestFunctions.hasNoEnemy(studentIds, "Fifty", "Five");
-
 			}
 			assertEquals(19, totalFemaleStudents);			
 		}
 	}
 
+	@Test
+	public void TestAllNoRequirements() throws IOException, ClassSetupException, SearchingException {
+		SheetDissector.ParseSheet("src\\test\\resources\\smallClassNoReq.xlsx");
+		ArrayList<Classroom[]> results = ClassroomSorter.solveAllClassrooms();
+		assertEquals(20, results.size());
+		checkIfResultsUnique(results);
+	}
 	
+	@Test
+	public void TestAllUnevenClasses() throws IOException, ClassSetupException, SearchingException {
+		SheetDissector.ParseSheet("src\\test\\resources\\unevenClasses.xlsx");
+		ArrayList<Classroom[]> results = ClassroomSorter.solveAllClassrooms();
+		checkIfResultsUnique(results);
+	}
+
+	private void checkIfResultsUnique(ArrayList<Classroom[]> results) {
+		// check all combinations are unique
+		for (int i=0; i<results.size(); i++) {
+			Classroom[] resultFromI = results.get(i);
+			for (int j=0; j<results.size(); j++) {
+				if (i==j)
+					continue;
+				Classroom[] resultFromJ = results.get(j);
+				
+				//iterate all classrooms, make sure there's a difference somewhere
+				boolean differenceFound = false;
+				for (Classroom classFromResultI : resultFromI) {
+					for (Classroom classFromResultJ : resultFromJ) {
+						if (classFromResultI.getTeacherId() == classFromResultJ.getTeacherId()) {
+							// check student lists are not the exact same
+							for (int studentIdFromI : classFromResultI.getStudentIds()) {
+								if (!classFromResultJ.getStudentIds().contains(studentIdFromI)) {
+									differenceFound = true;
+									break;
+								}
+							}
+							if (!differenceFound)
+								differenceFound = classFromResultI.getStudentIds().size() != classFromResultJ.getStudentIds().size();
+						}
+					}
+				}
+				assertTrue(differenceFound);
+			}
+		}
+		
+	}
 }
