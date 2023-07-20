@@ -41,6 +41,7 @@ public class MainProgram {
 			System.out.println("No solution found");
 			return;
 		}
+		args[0] = args[0].replace("\\", "/");
 		String[] fileNameComponents = args[0].split("/");
 		String fileName = fileNameComponents[fileNameComponents.length-1];
 		WriteSolution(allSolutions, fileName.substring(0, fileName.length()-5));
