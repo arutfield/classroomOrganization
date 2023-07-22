@@ -3,6 +3,8 @@ package classroomSorting;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -22,7 +24,14 @@ import exceptions.ClassSetupException;
 import exceptions.SearchingException;
 
 public class MainProgram {
+	private static long startTimeMilliseconds;
+	private static long timeoutTimeMilliseconds = 1200000;
+	private static boolean timeoutFlag = false;
+	
 	public static void main(String[] args) throws IOException, ClassSetupException, SearchingException {
+		LocalTime startTime = LocalTime.now();
+		startTimeMilliseconds = System.currentTimeMillis();
+		System.out.println("Start time: " + startTime);
 		if (args.length < 1) {
 			System.out.println("No file found");
 			System.exit(1);
@@ -41,35 +50,42 @@ public class MainProgram {
 			System.out.println("No solution found");
 			return;
 		}
+		System.out.println("Outputting file with " + allSolutions.size() + " solution(s)");
 		args[0] = args[0].replace("\\", "/");
 		String[] fileNameComponents = args[0].split("/");
 		String fileName = fileNameComponents[fileNameComponents.length-1];
 		WriteSolution(allSolutions, fileName.substring(0, fileName.length()-5));
-		System.out.println("Done");
+		LocalTime endTime = LocalTime.now();
+		System.out.println("Done. End time: " + endTime);
 	}
 
 	
 	private static void WriteSolution(ArrayList<Classroom[]> solutions, String fileName) throws IOException {
 		XSSFWorkbook workbook = new XSSFWorkbook();
+		XSSFCellStyle headerStyle = workbook.createCellStyle();
+		XSSFFont font = ((XSSFWorkbook) workbook).createFont();
+		font.setFontName("Arial");
+		font.setFontHeightInPoints((short) 16);
+		font.setBold(true);
+		headerStyle.setFont(font);
+
+		XSSFCellStyle studentHeaderStyle = workbook.createCellStyle();
+		XSSFFont studentFont = ((XSSFWorkbook) workbook).createFont();
+		studentFont.setFontName("Arial");
+		studentFont.setFontHeightInPoints((short) 12);
+		studentHeaderStyle.setFont(studentFont);
+		
 		for (int w=0; w<solutions.size(); w++) {
 			Classroom[] classrooms = solutions.get(w);
 			XSSFSheet sheet = workbook.createSheet("Solution " + (w+1));
 			sheet.createRow(0);
 
-			XSSFCellStyle headerStyle = workbook.createCellStyle();
-			XSSFFont font = ((XSSFWorkbook) workbook).createFont();
-			font.setFontName("Arial");
-			font.setFontHeightInPoints((short) 16);
-			font.setBold(true);
-			headerStyle.setFont(font);
-
-			XSSFCellStyle studentHeaderStyle = workbook.createCellStyle();
-			XSSFFont studentFont = ((XSSFWorkbook) workbook).createFont();
-			studentFont.setFontName("Arial");
-			studentFont.setFontHeightInPoints((short) 12);
-			studentHeaderStyle.setFont(studentFont);
-			
 			for (int i=0; i<classrooms.length; i++) {
+				if (System.currentTimeMillis() - startTimeMilliseconds > timeoutTimeMilliseconds) {
+					timeoutFlag = true;
+					System.out.println("Timeout triggered when exporting files. Truncating solution list");
+					break;
+				}
 				sheet.setColumnWidth(i, 6000);
 				XSSFRow header = sheet.getRow(0);
 				Cell headerCell = header.createCell(i);
@@ -87,6 +103,8 @@ public class MainProgram {
 					studentHeaderCell.setCellStyle(studentHeaderStyle);
 				}
 			}
+			if (timeoutFlag)
+				break;
 		}
 		File currDir = new File(".");
 		String path = currDir.getAbsolutePath();

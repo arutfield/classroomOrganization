@@ -9,16 +9,18 @@ import exceptions.SearchingException;
 public class ClassroomSorter {
 
 	private static int mostAllowedInClass;
-	private static int minAllowedInClass;
 	private static int extraStudents;
 	private static double mostFemaleStudentsAllowedPerClass;
 	private static double mostNotFemaleStudentsAllowedPerClass;
-
+	private static int timeoutTime = 600000;
+	private static long startTime;
+	private static boolean timeoutFlag = false;
+	
 	public static Classroom[] solveClassrooms() throws SearchingException {
+		startTime = System.currentTimeMillis();
 		Classroom[] emptyClasses = SheetDissector.getClasses();
 		Student[] students = SheetDissector.getStudents();
 		mostAllowedInClass = (int) Math.ceil((double) students.length / emptyClasses.length);
-		minAllowedInClass = (int) Math.floorDiv(students.length, emptyClasses.length);
 		extraStudents = students.length % emptyClasses.length;
 		if (extraStudents == 0)
 			extraStudents = emptyClasses.length;
@@ -34,10 +36,10 @@ public class ClassroomSorter {
 	}
 
 	public static ArrayList<Classroom[]> solveAllClassrooms() throws SearchingException {
+		startTime = System.currentTimeMillis();
 		Classroom[] emptyClasses = SheetDissector.getClasses();
 		Student[] students = SheetDissector.getStudents();
 		mostAllowedInClass = (int) Math.ceil((double) students.length / emptyClasses.length);
-		minAllowedInClass = (int) Math.floorDiv(students.length, emptyClasses.length);
 		extraStudents = students.length % emptyClasses.length;
 		if (extraStudents == 0)
 			extraStudents = emptyClasses.length;
@@ -54,6 +56,13 @@ public class ClassroomSorter {
 	
 	private static Classroom[] attemptToPlaceStudent(ArrayList<Student> students, Classroom[] initialClasses)
 			throws SearchingException {
+		if (System.currentTimeMillis() - startTime > timeoutTime) {
+			if (!timeoutFlag) {
+				timeoutFlag = true;
+				System.out.println("Timeout reached before finding a solution");
+			}
+			return null;
+		}
 		Classroom[] actualInitialClasses = initialClasses.clone();
 		ArrayList<Student> actualStudents = new ArrayList<Student>();
 		for (int i=0; i<students.size(); i++) actualStudents.add(null);
@@ -87,6 +96,13 @@ public class ClassroomSorter {
 	private static ArrayList<Classroom[]> attemptToPlaceStudentAllSets(ArrayList<Student> students, Classroom[] initialClasses)
 			throws SearchingException {
 		ArrayList<Classroom[]> allSolutions = new ArrayList<Classroom[]>();
+		if (System.currentTimeMillis() - startTime > timeoutTime) {
+			if (!timeoutFlag) {
+				timeoutFlag = true;
+				System.out.println("Timeout reached before finishing. Returning all solutions found so far.");
+			}
+			return allSolutions;
+		}
 		Classroom[] actualInitialClasses = initialClasses.clone();
 		ArrayList<Student> actualStudents = new ArrayList<Student>();
 		for (int i=0; i<students.size(); i++) actualStudents.add(null);
@@ -112,6 +128,8 @@ public class ClassroomSorter {
 						classroom.addStudent(student.getId(), student.IsFemale());
 						ArrayList<Classroom[]> subSolution = attemptToPlaceStudentAllSets(actualStudents, actualInitialClasses);
 						allSolutions.addAll(new ArrayList<Classroom[]>(subSolution));
+						if (timeoutFlag)
+							return allSolutions;
 						classroom.removeStudent(student.getId(), student.IsFemale());
 						break;
 					}
