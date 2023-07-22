@@ -12,6 +12,9 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.streaming.SXSSFRow;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
@@ -61,48 +64,60 @@ public class MainProgram {
 
 	
 	private static void WriteSolution(ArrayList<Classroom[]> solutions, String fileName) throws IOException {
-		XSSFWorkbook workbook = new XSSFWorkbook();
-		XSSFCellStyle headerStyle = workbook.createCellStyle();
-		XSSFFont font = ((XSSFWorkbook) workbook).createFont();
+		SXSSFWorkbook workbook = new SXSSFWorkbook();
+		XSSFCellStyle headerStyle = (XSSFCellStyle) workbook.createCellStyle();
+		XSSFFont font = (XSSFFont) workbook.createFont();
 		font.setFontName("Arial");
 		font.setFontHeightInPoints((short) 16);
 		font.setBold(true);
 		headerStyle.setFont(font);
 
-		XSSFCellStyle studentHeaderStyle = workbook.createCellStyle();
-		XSSFFont studentFont = ((XSSFWorkbook) workbook).createFont();
+		XSSFCellStyle studentHeaderStyle = (XSSFCellStyle) workbook.createCellStyle();
+		XSSFFont studentFont = (XSSFFont) workbook.createFont();
 		studentFont.setFontName("Arial");
 		studentFont.setFontHeightInPoints((short) 12);
 		studentHeaderStyle.setFont(studentFont);
 		
+		int column = 16384;
+		int sheetCounter = 0;
+		SXSSFSheet sheet = null;
 		for (int w=0; w<solutions.size(); w++) {
 			Classroom[] classrooms = solutions.get(w);
-			XSSFSheet sheet = workbook.createSheet("Solution " + (w+1));
-			sheet.createRow(0);
+			if (column > 16384 - classrooms.length - 1) {
+				if (sheet != null)
+					sheet.flushRows();
+				sheetCounter++;
+				sheet = workbook.createSheet("Solutions_" + sheetCounter);
+				column = 0;
+			}
+			if (sheet.getLastRowNum() < 0)
+				sheet.createRow(0);
 
 			for (int i=0; i<classrooms.length; i++) {
 				if (System.currentTimeMillis() - startTimeMilliseconds > timeoutTimeMilliseconds) {
 					timeoutFlag = true;
-					System.out.println("Timeout triggered when exporting files. Truncating solution list");
+					System.out.println("Timeout triggered when exporting files on solution #" + w + ". Truncating solution list");
 					break;
 				}
-				sheet.setColumnWidth(i, 6000);
-				XSSFRow header = sheet.getRow(0);
-				Cell headerCell = header.createCell(i);
+				sheet.setColumnWidth(column, 6000);
+				SXSSFRow header = sheet.getRow(0);
+				Cell headerCell = header.createCell(column);
 				headerCell.setCellValue(NumberReference.findTeacherNameByNumber(classrooms[i].getTeacherId()));
 				headerCell.setCellStyle(headerStyle);
 				for (int j=0; j<classrooms[i].getStudentIds().size(); j++) {
 					int r = j+1;
-					XSSFRow studentHeader = null;
+					SXSSFRow studentHeader = null;
 					if (sheet.getLastRowNum() < r)
 						studentHeader = sheet.createRow(r);
 					else
 						studentHeader = sheet.getRow(r);
-					Cell studentHeaderCell = studentHeader.createCell(i);
+					Cell studentHeaderCell = studentHeader.createCell(column);
 					studentHeaderCell.setCellValue(NumberReference.findStudentNameByNumber(classrooms[i].getStudentIds().get(j)));
 					studentHeaderCell.setCellStyle(studentHeaderStyle);
 				}
+				column++;
 			}
+			column++;
 			if (timeoutFlag)
 				break;
 		}
