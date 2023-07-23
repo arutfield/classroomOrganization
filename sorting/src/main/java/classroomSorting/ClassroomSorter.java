@@ -13,8 +13,10 @@ public class ClassroomSorter {
 	private static double mostFemaleStudentsAllowedPerClass;
 	private static double mostNotFemaleStudentsAllowedPerClass;
 	private static int timeoutTime = 600000;
+	private static int solutionsFound = 0;
+	private static int maxSolutions = 1000000;
 	private static long startTime;
-	private static boolean timeoutFlag = false;
+	private static boolean exitEarlyFlag = false;
 	
 	public static Classroom[] solveClassrooms() throws SearchingException {
 		startTime = System.currentTimeMillis();
@@ -57,8 +59,8 @@ public class ClassroomSorter {
 	private static Classroom[] attemptToPlaceStudent(ArrayList<Student> students, Classroom[] initialClasses)
 			throws SearchingException {
 		if (System.currentTimeMillis() - startTime > timeoutTime) {
-			if (!timeoutFlag) {
-				timeoutFlag = true;
+			if (!exitEarlyFlag) {
+				exitEarlyFlag = true;
 				System.out.println("Timeout reached before finding a solution");
 			}
 			return null;
@@ -97,9 +99,16 @@ public class ClassroomSorter {
 			throws SearchingException {
 		ArrayList<Classroom[]> allSolutions = new ArrayList<Classroom[]>();
 		if (System.currentTimeMillis() - startTime > timeoutTime) {
-			if (!timeoutFlag) {
-				timeoutFlag = true;
+			if (!exitEarlyFlag) {
+				exitEarlyFlag = true;
 				System.out.println("Timeout reached before finishing. Returning all solutions found so far.");
+			}
+			return allSolutions;
+		}
+		if (solutionsFound == maxSolutions) {
+			if (!exitEarlyFlag) {
+				exitEarlyFlag = true;
+				System.out.println("Maximum solutions of " + maxSolutions + " found. Exiting");
 			}
 			return allSolutions;
 		}
@@ -111,6 +120,7 @@ public class ClassroomSorter {
 			Classroom[] solution = new Classroom[actualInitialClasses.length];
 			for (int i=0; i<actualInitialClasses.length; i++) solution[i] = new Classroom(actualInitialClasses[i]);
 			allSolutions.add(solution);
+			solutionsFound++;
 			return allSolutions;
 		}
 		Student student = actualStudents.remove(0);
@@ -128,7 +138,7 @@ public class ClassroomSorter {
 						classroom.addStudent(student.getId(), student.IsFemale());
 						ArrayList<Classroom[]> subSolution = attemptToPlaceStudentAllSets(actualStudents, actualInitialClasses);
 						allSolutions.addAll(new ArrayList<Classroom[]>(subSolution));
-						if (timeoutFlag)
+						if (exitEarlyFlag)
 							return allSolutions;
 						classroom.removeStudent(student.getId(), student.IsFemale());
 						break;
